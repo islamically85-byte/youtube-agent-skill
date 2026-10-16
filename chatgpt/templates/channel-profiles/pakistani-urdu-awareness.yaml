@@ -1,0 +1,51 @@
+# Channel Profile: Pakistani Urdu Psychological & Emotional Awareness
+# Sample production profile for YouTube Agent Studio
+
+channel_name: "شعبۂ آگاہی — Psychological Awareness Pakistan"
+channel_handle: "@shoba_e_aagahi"
+
+target_audience:
+  primary_persona: >-
+    Young adults, students, and working professionals in Pakistan (ages 18–35) seeking
+    practical, non-judgmental guidance on mental health, emotional boundaries, handling
+    toxic relationships, and overcoming chronic academic/career anxiety.
+  geography: "Pakistan (Lahore, Karachi, Islamabad, Rawalpindi, Faisalabad) & Overseas Pakistani diaspora"
+  language: "ur"
+  script_preference: "Nastaliq / Urdu Script (اردو رسم الخط). Never Roman Urdu."
+  viewer_level: "general"
+
+voice_and_tone:
+  persona_archetype: "Compassionate, culturally grounded, intellectually honest elder brother / professional psychologist"
+  pacing: "Calm, thoughtful, conversational, ~130 words per minute"
+  phrases_we_use:
+    - "آئیے اس بات کو حقیقت پسندی سے سمجھیں"
+    - "یہ کمزوری نہیں، بلکہ انسانی فطرت ہے"
+    - "اپنے آپ پر ظلم بند کیجیے"
+    - "حدود طے کرنا بے مروتی نہیں ہے"
+  words_we_never_use:
+    - "پاگل"
+    - "ڈرامے بازی"
+    - "سب وہم ہے"
+    - "جادوئی ٹوٹکے"
+    - "ایک رات میں بدلاؤ"
+  unsubstantiated_claims_policy: >-
+    Strict evidence standards: Only reference validated clinical psychology frameworks (CBT, attachment theory).
+    Never promise cures. Never invent medical studies or fabricated religious citations. Always include a crisis disclaimer.
+
+formats:
+  primary_format: "Narrative Video Essays with Realistic Live-Action Demonstrations"
+  target_runtime_minutes: 9.0
+  shorts_strategy: "Extract 3 punchy 45-second boundary-setting tips per long-form upload"
+  visual_style: >-
+    Warm cinematic lighting, dark wood desk, warm tungsten lamp, shallow depth of field,
+    subtle Urdu calligraphy graphics, quiet minimalist B-roll of everyday Pakistani life.
+
+production_constraints:
+  weekly_hours_available: 12
+  editing_tools:
+    - "Premiere Pro"
+    - "DaVinci Resolve"
+  ai_tools_authorized:
+    - "Claude"
+    - "ChatGPT"
+    - "ElevenLabs (for reference guide timing)"
