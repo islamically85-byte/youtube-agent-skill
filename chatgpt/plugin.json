@@ -2,8 +2,8 @@
   "schema_version": "v1",
   "name_for_human": "YouTube Agent Studio",
   "name_for_model": "youtube_agent_studio",
-  "description_for_human": "Complete YouTube creator studio for scripting, packaging, edit decision lists, multi-scene production, and channel growth.",
-  "description_for_model": "Comprehensive YouTube creator studio containing 17 specialized skills coordinated by yt-studio. Handles scriptwriting with scored hooks, title/thumbnail pairing linter, EDL generation from transcripts, retention diagnostics, platform-compliant chapters, shorts extraction, competitor outlier analysis, channel audits, production storyboards, AI video generation prompt coordination, native Pakistani Urdu localization, factual claim verification, upload metadata preparation, and controlled A/B testing.",
+  "description_for_human": "Complete YouTube creator studio for scripting, packaging, edit decision lists, stock footage documentary production, and channel growth.",
+  "description_for_model": "Comprehensive YouTube creator studio containing 24 specialized skills coordinated by yt-studio. Maintained by ABDUL MUEED LASHARY (upstream MIT by Jake Schincariol). Handles scriptwriting with scored hooks, title/thumbnail pairing linter, EDL generation from transcripts, retention diagnostics, platform-compliant chapters, shorts extraction, competitor outlier analysis, channel audits, production storyboards, stock video curation, Pakistani Urdu voiceover, multi-track FFmpeg rendering, automated media QA, native Pakistani Urdu localization, factual claim verification, upload metadata preparation, and controlled A/B testing.",
   "auth": {
     "type": "none"
   },
@@ -11,6 +11,5 @@
     "type": "none"
   },
   "logo_url": "https://avatars.githubusercontent.com/u/280336056?v=4",
-  "contact_email": "errorcodelagfix@gmail.com",
   "legal_info_url": "https://github.com/islamically85-byte/youtube-agent-skill/blob/main/LICENSE"
 }

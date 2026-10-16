@@ -1,139 +1,131 @@
-# YouTube Agent Studio v2.0
+# YouTube Agent Studio v2.0 — Free-First Documentary Production Edition
 
 > **A professional, open-source production toolkit for YouTube creators — engineered natively for both Anthropic Claude and OpenAI ChatGPT.**
+> **Extension Maintainer:** ABDUL MUEED LASHARY | **Upstream Author:** Jake Schincariol
 
 [![Test & Build](https://github.com/islamically85-byte/youtube-agent-skill/actions/workflows/test.yml/badge.svg)](https://github.com/islamically85-byte/youtube-agent-skill/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-brightgreen.svg)](#python-utilities)
 [![Platform: Claude & ChatGPT](https://img.shields.io/badge/Platform-Claude%20%7C%20ChatGPT-purple.svg)](#platform-editions)
+[![FFmpeg Verified](https://img.shields.io/badge/FFmpeg-Multi--Track%20Assembly-red.svg)](#multi-track-video-assembly)
 
 ---
 
 ## What is YouTube Agent Studio?
 
-YouTube Agent Studio transforms AI into a rigorous pair-programmer for YouTube creators. Rather than generating generic summaries or formulaic fluff, it provides **17 specialized production workflows** backed by **seven zero-dependency Python utilities**.
+YouTube Agent Studio transforms AI into a rigorous pair-programmer and production lead for YouTube creators. Rather than generating generic summaries or formulaic fluff, it provides **24 specialized production workflows** backed by **11 zero-dependency Python utilities** and a deterministic **FFmpeg multi-track video assembly engine**.
 
 ### Core Guarantees:
-- **100% Free & Offline-First**: No paid APIs, subscriptions, YouTube account logins, or API keys are required for core functionality.
-- **Never Fabricates Metrics**: Does not invent analytics, competitor statistics, scientific studies, or publication outcomes.
-- **You Remain in Control**: Every workflow concludes with an actionable artifact and the question: **Ship it, or change it?** Nothing is published automatically.
+- **100% Free & Offline-First (Default Budget = 0 Credits)**: Core functionality requires no paid APIs, no subscriptions, no YouTube account logins, and no API keys.
+- **Third-Party Quota Guarding**: Protects depleting third-party quotas (such as vidIQ) from accidental drain and blocks metered charges without explicit user authorization.
+- **Documentary-Grade Real Footage**: Replaces AI slide shows and synthetic 3D gimmicks with authentic, permissively licensed stock video (Pexels, Pixabay, Mixkit, CC0).
+- **Authentic Pakistani Urdu Narration**: Spoken scripts and subtitles authored strictly in native Perso-Arabic Urdu script (`اردو`) at ~130 WPM documentary pacing.
+- **Objective Quality Gate (`TECHNICALLY_VALID_PENDING_REVIEW`)**: Probes media for black frames, loudness compliance (-14 LUFS), and licensing provenance without ever replacing mandatory human review.
+- **Never Fabricates Metrics**: Does not invent analytics, competitor statistics, scientific citations, or publication outcomes.
 
 ---
 
-## Dual Platform Editions
+## Dual Platform Architecture
 
 YouTube Agent Studio provides two dedicated, independently maintainable distributions in the same repository:
 
 | Feature | Claude Edition (`skills/`) | ChatGPT Edition (`chatgpt/`) |
 |---|---|---|
-| **Invocation** | Slash commands (`/yt-script`, `/yt-package`, etc.) | Natural conversation & Master Orchestrator (`yt-studio`) |
-| **Skill Count** | 17 Dedicated Skills | 18 Workflows (17 Specialized + `yt-studio` Orchestrator) |
+| **Invocation** | Slash commands (`/yt-studio`, `/yt-script`, etc.) | Natural conversation & Master Orchestrator (`yt-studio`) |
+| **Skill Count** | **24 Dedicated Skills** | **24 Dedicated Skills** |
 | **Python Execution** | Local shell execution in Claude Code | Code Interpreter / local Python execution |
 | **Package Asset** | `release/youtube-agent-claude.zip` | `release/youtube-agent-chatgpt-skill.zip`<br>`release/youtube-agent-chatgpt-plugin.zip` |
 | **Installation Guide** | [docs/INSTALL-CLAUDE.md](docs/INSTALL-CLAUDE.md) | [docs/INSTALL-CHATGPT.md](docs/INSTALL-CHATGPT.md) |
 
 ---
 
-## The Workflow Catalog
+## The 24-Workflow Studio Catalog
 
-### Upgraded Core Workflows (11)
-1. **`yt-script`**: Scriptwriting engine across long-form, Shorts, educational, faceless, and talking-head formats. Evaluates hooks against 21 creator formulas with language-aware speech rates.
-2. **`yt-package`**: Lints title and thumbnail as a single click surface. Checks mobile (40 char) and desktop (60 char) truncation, shouting, buzzwords, and keyword repetition.
-3. **`yt-edit`**: Generates Edit Decision Lists (EDL) from SRT, VTT, or Whisper JSON transcripts. Pinpoints dead-air pauses, verbal fillers, and repeated restart takes.
-4. **`yt-comment`**: 5-tier comment triage (questions, feedback, appreciation, moderation, noise) and authentic voice replies.
-5. **`yt-plan`**: Capacity-calibrated content calendars distinguishing anchor tentpole videos from low-friction Shorts.
-6. **`yt-viral`**: Ethical competitor intelligence ranking uploads by multiple over each channel's own median view count.
-7. **`yt-retention`**: Diagnoses hook leaks (first 30s), steep drop cliff moments, and pacing slides from YouTube Studio CSV exports.
-8. **`yt-shorts`**: Extracts standalone 9:16 vertical clips from long transcripts with rewritten spoken hooks and loop engineering.
-9. **`yt-seo`**: Search-intent descriptions, above-the-fold value summaries, verified timestamps, and secondary tags.
-10. **`yt-chapters`**: Validates YouTube's platform chapter constraints (starts at 00:00, >= 3 chapters, min 10s per chapter).
-11. **`yt-audit`**: 5-pillar holistic channel diagnostic delivering exactly **ONE highest-impact fix**.
+### 1. Studio Orchestration
+- **`yt-studio`**: Master documentary conductor coordinating concept &rarr; research &rarr; script &rarr; Urdu narration &rarr; stock curation &rarr; FFmpeg assembly &rarr; QA &rarr; packaging.
 
-### Advanced Studio Workflows (6 New)
-12. **`yt-storyboard`**: Converts scripts into shot-by-shot visual storyboards with camera angles, subject blocking, lighting, and continuity bibles.
-13. **`yt-produce`**: Capability-aware AI video prompt generation for realistic live-action, 3D animation, and explainers with positive and negative constraints.
-14. **`yt-localize`**: Professional multilingual localization with native Pakistani Urdu script (`اردو`), ~130 WPM cadence adjustments, and RTL formatting.
-15. **`yt-factcheck`**: Rigorous claim verification classifying evidence into `[VERIFIED]`, `[DISPUTED]`, `[UNSUPPORTED]`, or `[REQUIRES CITATION]` with zero-hallucination rules.
-16. **`yt-upload-prep`**: Complete publication dossier with COPPA audience classification, synthetic-media disclosures, and audio LUFS pre-flight checklists.
-17. **`yt-experiment`**: Controlled A/B hypothesis design calibrated for YouTube Studio's native "Test & Compare" thumbnail tool.
+### 2. Free Stock Footage & Documentary Production (New in v2.0)
+- **`yt-stock-producer`**: Curates and registers permissive stock footage (Pexels, Pixabay, Mixkit, CC0) into a deterministic `project-manifest.json` with commercial licensing verification.
+- **`yt-voice-urdu`**: Guides authentic Pakistani Urdu voiceover production in native script (`اردو`), ~130 WPM speech cadence, and broadcast audio mastering.
+- **`yt-video-editor`**: Documentary timeline assembly via `render_free.py` (clip trimming, canvas scaling to 1080p, -24 dB audio ducking).
+- **`yt-motion-graphics`**: Typographic design for Urdu RTL subtitles, clean lower-thirds, and 10% mobile safe-zone enforcement.
+- **`yt-production-qa`**: Automated `ffprobe`/`ffmpeg` technical media prober via `qa_media.py`, awarding `TECHNICALLY_VALID_PENDING_REVIEW`.
+- **`yt-credit-guard`**: Budget controller via `credit_guard.py` blocking unapproved third-party API deductions (e.g. vidIQ, ElevenLabs).
 
-### Master Orchestration (ChatGPT)
-18. **`yt-studio`**: Central conductor that interprets conversational creator requests, sequences skills, verifies cross-asset consistency, and delivers consolidated production packages.
+### 3. Core Channel & Editorial Workflows (11)
+- **`yt-script`**: Scriptwriting engine across long-form, Shorts, and documentaries with 21 scored hook formulas.
+- **`yt-package`**: Lints title and thumbnail as a single click surface with mobile (40 char) truncation checks.
+- **`yt-edit`**: Generates Edit Decision Lists (EDL) from SRT, VTT, or Whisper JSON transcripts (dead air & filler cuts).
+- **`yt-comment`**: 5-tier comment triage and authentic creator voice replies.
+- **`yt-plan`**: Capacity-calibrated content calendars distinguishing anchor tentpole videos from low-friction Shorts.
+- **`yt-viral`**: Ethical competitor intelligence ranking uploads by multiple over each channel's median views.
+- **`yt-retention`**: Diagnoses hook leaks (first 30s), steep drop cliff moments, and pacing slides from CSV exports.
+- **`yt-shorts`**: Extracts standalone 9:16 vertical clips from long transcripts with rewritten spoken hooks.
+- **`yt-seo`**: Search-intent descriptions, above-the-fold value summaries, verified timestamps, and secondary tags.
+- **`yt-chapters`**: Validates YouTube platform chapter constraints (starts at 00:00, >= 3 chapters, min 10s per chapter).
+- **`yt-audit`**: 5-pillar holistic channel diagnostic delivering exactly **ONE highest-impact fix**.
 
----
-
-## Quickstart Installation
-
-### Claude Code Installation
-```bash
-# Direct marketplace installation
-/plugin marketplace add islamically85-byte/youtube-agent-skill
-/plugin install youtube-agent
-
-# Or clone and copy into user skills folder
-git clone https://github.com/islamically85-byte/youtube-agent-skill.git
-cp -r youtube-agent-skill/skills/yt-* ~/.claude/skills/
-```
-
-### ChatGPT Installation
-1. Download `release/youtube-agent-chatgpt-skill.zip` (or `youtube-agent-chatgpt-plugin.zip`).
-2. In ChatGPT, upload the skill archive into your Custom GPT configuration.
-3. Enable **Code Interpreter** to execute the Python tools.
-4. See [docs/INSTALL-CHATGPT.md](docs/INSTALL-CHATGPT.md) for step-by-step instructions.
+### 4. Advanced Studio Systems (6)
+- **`yt-storyboard`**: Converts scripts into shot-by-shot visual storyboards with camera angles and continuity bibles.
+- **`yt-produce`**: Capability-aware AI video prompt generation for realistic live-action and explainers.
+- **`yt-localize`**: Multilingual adaptation with native Pakistani Urdu script and culturally fluent phrasing.
+- **`yt-factcheck`**: Rigorous claim verification classifying evidence into `[VERIFIED]`, `[DISPUTED]`, `[UNSUPPORTED]`, or `[REQUIRES CITATION]`.
+- **`yt-upload-prep`**: Complete publication dossier with COPPA classification, synthetic disclosures, and audio checks.
+- **`yt-experiment`**: Controlled A/B hypothesis design calibrated for YouTube Studio's "Test & Compare" tool.
 
 ---
 
-## Python Utilities (Zero External Dependencies)
+## Python Utilities Suite
 
-All tools run on standard Python 3.10+ without `pip install`:
+All tools run on standard Python 3.10+ without required external dependencies:
 
 ```bash
-# Universal transcript parsing (SRT, VTT, Whisper JSON)
+# 1. Validate project manifest & licensing provenance
+python3 shared/scripts/validate_manifest.py --manifest project-manifest.json --strict
+
+# 2. Check third-party credit budget & protect live balances
+python3 shared/scripts/credit_guard.py --tool vidiq --action competitor_research
+
+# 3. Render multi-track documentary video with ducked music & subtitles
+python3 shared/scripts/render_free.py --manifest project-manifest.json --output master.mp4
+
+# 4. Probe rendered media for technical QA compliance
+python3 shared/scripts/qa_media.py --media master.mp4 --manifest project-manifest.json
+
+# 5. Universal transcript parser (SRT, VTT, Whisper JSON)
 python3 shared/scripts/transcript.py transcript.srt --language ur
 
-# Score a hook against 21 creator formulas
+# 6. Score hook against 21 creator formulas
 python3 shared/scripts/hookscore.py --hook "97% of creators quit before video 30"
 
-# Lint title & thumbnail pairing
+# 7. Lint title & thumbnail pairing
 python3 shared/scripts/title.py --title "Why 97% of Creators Quit" --thumb "STOP QUITTING"
 
-# Generate Edit Decision List (EDL) from transcript
+# 8. Generate Edit Decision List (EDL) from pauses
 python3 shared/scripts/deadair.py transcript.srt --floor 0.35 --json
 
-# Validate YouTube platform chapters
+# 9. Validate YouTube platform chapters
 python3 shared/scripts/chapters.py transcript.srt --target 8
 
-# Diagnose audience retention leaks
+# 10. Diagnose audience retention leaks
 python3 shared/scripts/retention.py retention.csv --transcript transcript.srt
 
-# Rank competitor outliers against channel median
+# 11. Rank competitor outliers against channel median
 python3 shared/scripts/swipe.py competitor_videos.json --min 2.0
 ```
 
 ---
 
-## Example ChatGPT Orchestration
-
-You can prompt ChatGPT conversationally without remembering commands:
-
-> **"Create a complete YouTube production package about emotional abuse, in Pakistani Urdu, with four realistic 10-second video scenes, a thumbnail concept, video metadata and an upload checklist."**
-
-`yt-studio` will automatically:
-1. Verify clinical psychological claims via `yt-factcheck`.
-2. Lint non-overlapping packaging via `yt-package`.
-3. Draft a spoken script in authentic Pakistani Urdu script (`اردو`) via `yt-script` & `yt-localize`.
-4. Generate 4 modular 10-second realistic video generation prompts with negative constraints via `yt-produce`.
-5. Assemble description, validated chapters, and compliance disclosures via `yt-upload-prep`.
-
----
-
 ## Automated Quality Assurance
 
-YouTube Agent Studio includes an automated test suite with **56 unit, integration, and behavioral tests**:
+YouTube Agent Studio includes an automated test suite containing **72 unit, integration, and behavioral tests**:
 
 ```bash
 # Run the complete test suite
 python3 -m unittest discover -s tests -t . -v
+
+# Run synthetic video render demo
+python3 shared/scripts/render_free.py --synthetic
 
 # Build and validate release archives
 python3 scripts/build-releases.py
@@ -141,20 +133,9 @@ python3 scripts/build-releases.py
 
 ---
 
-## Documentation Directory
-- [Audit Findings & Remediation](docs/AUDIT-REPORT.md)
-- [Claude Installation Guide](docs/INSTALL-CLAUDE.md)
-- [ChatGPT Installation Guide](docs/INSTALL-CHATGPT.md)
-- [Compatibility & Comparison Matrix](docs/COMPATIBILITY.md)
-- [Repository Architecture](docs/ARCHITECTURE.md)
-- [Security & Integrity Policy](docs/SECURITY.md)
-- [Contributing Guidelines](docs/CONTRIBUTING.md)
-- [Changelog](CHANGELOG.md)
+## Upstream Attribution, Maintainer & License
 
----
-
-## Upstream Attribution & License
-
-- Original project by [Jake Schincariol](https://github.com/Jakeschincariol/youtube-agent-skill).
-- Extended, architected, and maintained by **ABDUL MUEED LASHARY**.
-- Released under the open-source **[MIT License](LICENSE)**.
+- **Original Project & MIT Attribution:** [Jake Schincariol](https://github.com/Jakeschincariol/youtube-agent-skill) ([`Jakeschincariol/youtube-agent-skill`](https://github.com/Jakeschincariol/youtube-agent-skill)).
+- **Extension Architecture & Maintenance:** **ABDUL MUEED LASHARY** ([`islamically85-byte/youtube-agent-skill`](https://github.com/islamically85-byte/youtube-agent-skill)).
+- **License:** Open-source under the **[MIT License](LICENSE)**.
+- *Notice:* This repository is an independent open-source toolkit and is not officially affiliated with, sponsored by, or endorsed by Anthropic, OpenAI, Google, or vidIQ.

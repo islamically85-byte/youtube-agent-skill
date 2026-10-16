@@ -25,18 +25,26 @@ Once installed, confirm all commands are available by running:
 
 ## Method 2: Global Skill Directory Installation
 
-To install all 17 skills into your global Claude skills configuration:
+To install all 24 skills into your global Claude skills configuration:
 
 ```bash
 git clone https://github.com/islamically85-byte/youtube-agent-skill.git
 cd youtube-agent-skill
 
-# Copy all skills to your user skills folder
+# Copy all 24 skills to your user skills folder
 mkdir -p ~/.claude/skills
 cp -r skills/yt-* ~/.claude/skills/
 ```
 
-Every skill is **100% self-contained** and includes its own zero-dependency Python tools and formula references.
+Every skill is **100% self-contained** and includes its own zero-dependency Python tools, render engines, and formula references.
+New documentary production commands include:
+- `/yt-studio`: Master documentary orchestrator
+- `/yt-stock-producer`: Permissive stock footage curation
+- `/yt-voice-urdu`: Pakistani Urdu voiceover guidance
+- `/yt-video-editor`: Timeline assembly and FFmpeg rendering
+- `/yt-motion-graphics`: RTL Urdu typography & safe zones
+- `/yt-production-qa`: Automated technical QA prober
+- `/yt-credit-guard`: Zero-credit quota guard
 
 ---
 

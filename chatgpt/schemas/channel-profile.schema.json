@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "YouTubeChannelProfile",
+  "description": "Schema for portable YouTube creator and channel profiles.",
+  "type": "object",
+  "properties": {
+    "channel_name": { "type": "string" },
+    "channel_handle": { "type": "string" },
+    "target_audience": {
+      "type": "object",
+      "properties": {
+        "primary_persona": { "type": "string" },
+        "geography": { "type": "string" },
+        "language": { "type": "string" },
+        "script_preference": { "type": "string", "description": "e.g., Nastaliq Urdu script, Latin, etc." },
+        "viewer_level": { "type": "string", "enum": ["beginner", "intermediate", "advanced", "general"] }
+      },
+      "required": ["primary_persona", "language"]
+    },
+    "voice_and_tone": {
+      "type": "object",
+      "properties": {
+        "persona_archetype": { "type": "string" },
+        "pacing": { "type": "string" },
+        "phrases_we_use": { "type": "array", "items": { "type": "string" } },
+        "words_we_never_use": { "type": "array", "items": { "type": "string" } },
+        "unsubstantiated_claims_policy": { "type": "string" }
+      }
+    },
+    "formats": {
+      "type": "object",
+      "properties": {
+        "primary_format": { "type": "string" },
+        "target_runtime_minutes": { "type": "number" },
+        "shorts_strategy": { "type": "string" },
+        "visual_style": { "type": "string" }
+      }
+    },
+    "production_constraints": {
+      "type": "object",
+      "properties": {
+        "weekly_hours_available": { "type": "number" },
+        "editing_tools": { "type": "array", "items": { "type": "string" } },
+        "ai_tools_authorized": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  },
+  "required": ["channel_name", "target_audience"]
+}

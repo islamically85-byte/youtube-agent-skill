@@ -10,10 +10,12 @@ REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 EXPECTED_CLAUDE_SKILLS = [
     "yt-script", "yt-package", "yt-edit", "yt-comment", "yt-plan", "yt-viral",
     "yt-retention", "yt-shorts", "yt-seo", "yt-chapters", "yt-audit",
-    "yt-storyboard", "yt-produce", "yt-localize", "yt-factcheck", "yt-upload-prep", "yt-experiment"
+    "yt-storyboard", "yt-produce", "yt-localize", "yt-factcheck", "yt-upload-prep", "yt-experiment",
+    "yt-studio", "yt-stock-producer", "yt-voice-urdu", "yt-video-editor",
+    "yt-motion-graphics", "yt-production-qa", "yt-credit-guard"
 ]
 
-EXPECTED_CHATGPT_SKILLS = EXPECTED_CLAUDE_SKILLS + ["yt-studio"]
+EXPECTED_CHATGPT_SKILLS = EXPECTED_CLAUDE_SKILLS
 
 
 class TestSkillStructure(unittest.TestCase):

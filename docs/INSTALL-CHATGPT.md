@@ -23,11 +23,11 @@ This is the recommended distribution for ChatGPT Plus, Team, Enterprise, and Edu
    - Navigate to [ChatGPT](https://chat.openai.com) -> **Explore GPTs** -> **Create**.
    - Under the **Configure** tab:
      - **Name**: `YouTube Agent Studio`
-     - **Description**: `18 specialized workflows for YouTube creators: scripting, packaging, storyboarding, multi-scene video prompting, and audience retention.`
+     - **Description**: `24 specialized workflows for YouTube creators: scripting, packaging, storyboarding, stock footage documentary production, Pakistani Urdu narration, multi-track FFmpeg rendering, and media QA.`
      - **Instructions**: Reference `chatgpt/skills/yt-studio/SKILL.md` as the core orchestrator prompt.
 3. **Upload Files & References**:
-   - In the **Knowledge** or **Code Interpreter / Capabilities** section, upload `youtube-agent-chatgpt-skill.zip` (or the unpacked `chatgpt/references/` and `chatgpt/scripts/` folders).
-   - Enable **Code Interpreter** to allow ChatGPT to execute `hookscore.py`, `title.py`, `deadair.py`, `chapters.py`, `retention.py`, and `swipe.py` deterministically.
+   - In the **Knowledge** or **Code Interpreter / Capabilities** section, upload `youtube-agent-chatgpt-skill.zip` (or the unpacked `chatgpt/references/`, `chatgpt/schemas/`, and `chatgpt/scripts/` folders).
+   - Enable **Code Interpreter** to allow ChatGPT to execute `hookscore.py`, `title.py`, `deadair.py`, `chapters.py`, `retention.py`, `swipe.py`, `validate_manifest.py`, `render_free.py`, `qa_media.py`, and `credit_guard.py` deterministically.
 4. **Publish**:
    - Save your Custom GPT for **Only Me**, **Anyone with a link**, or the **GPT Store**.
 

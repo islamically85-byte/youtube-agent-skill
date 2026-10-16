@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "YouTubeProjectManifest",
+  "description": "Deterministic project manifest and licensing provenance register for free-first video production.",
+  "type": "object",
+  "properties": {
+    "project_id": { "type": "string" },
+    "title": { "type": "string" },
+    "target_duration_sec": { "type": "number", "minimum": 1.0 },
+    "aspect_ratio": { "type": "string", "enum": ["16:9", "9:16", "1:1"] },
+    "credit_budget": { "type": "number", "default": 0, "maximum": 0 },
+    "footage_clips": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "source_type": { "type": "string", "enum": ["local", "pexels", "pixabay", "mixkit", "creator_owned", "procedural_test"] },
+          "source_url_or_path": { "type": "string" },
+          "license_class": { "type": "string", "enum": ["Pexels License", "Pixabay License", "Mixkit Free License", "Creative Commons CC0", "Creator Owned", "MIT Procedural Test"] },
+          "license_verified_date": { "type": "string" },
+          "author_or_creator": { "type": "string" },
+          "model_property_release": { "type": "string", "enum": ["released", "not_required_scenic", "editorial_only", "unknown"] },
+          "clip_duration_sec": { "type": "number", "minimum": 0.1 },
+          "timeline_in_sec": { "type": "number", "minimum": 0.0 },
+          "timeline_out_sec": { "type": "number", "minimum": 0.1 },
+          "narration_topic_match": { "type": "string" }
+        },
+        "required": ["id", "source_type", "source_url_or_path", "license_class", "license_verified_date", "clip_duration_sec", "timeline_in_sec", "timeline_out_sec"]
+      }
+    },
+    "audio": {
+      "type": "object",
+      "properties": {
+        "narration": {
+          "type": "object",
+          "properties": {
+            "file_path": { "type": "string" },
+            "language": { "type": "string", "enum": ["ur", "en", "hi", "other"] },
+            "script_format": { "type": "string", "enum": ["urdu_nastaliq", "urdu_naskh", "latin_standard"] },
+            "target_lufs": { "type": "number", "default": -14.0 },
+            "voice_provenance": { "type": "string", "enum": ["human_recorded", "permissive_tts", "procedural_test"] }
+          },
+          "required": ["file_path", "language"]
+        },
+        "background_music": {
+          "type": "object",
+          "properties": {
+            "file_path": { "type": "string" },
+            "license_class": { "type": "string" },
+            "ducking_level_db": { "type": "number", "default": -24.0 }
+          }
+        }
+      },
+      "required": ["narration"]
+    },
+    "graphics_and_subtitles": {
+      "type": "object",
+      "properties": {
+        "subtitles_file": { "type": "string" },
+        "subtitles_font": { "type": "string" },
+        "rtl_layout": { "type": "boolean", "default": false },
+        "title_overlay_text": { "type": "string" },
+        "lower_thirds": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "text": { "type": "string" },
+              "start_sec": { "type": "number" },
+              "duration_sec": { "type": "number" }
+            },
+            "required": ["text", "start_sec", "duration_sec"]
+          }
+        }
+      }
+    },
+    "render_target": {
+      "type": "object",
+      "properties": {
+        "output_path": { "type": "string" },
+        "resolution": { "type": "string", "default": "1920x1080" },
+        "fps": { "type": "integer", "default": 30 },
+        "video_codec": { "type": "string", "default": "libx264" },
+        "audio_codec": { "type": "string", "default": "aac" }
+      },
+      "required": ["output_path"]
+    }
+  },
+  "required": ["project_id", "title", "target_duration_sec", "footage_clips", "audio", "render_target"]
+}
