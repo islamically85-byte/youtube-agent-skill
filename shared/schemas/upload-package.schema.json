@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "YouTubeUploadPackage",
+  "description": "Publication-ready YouTube metadata package specification.",
+  "type": "object",
+  "properties": {
+    "title": { "type": "string", "maxLength": 100 },
+    "description": { "type": "string", "maxLength": 5000 },
+    "primary_keywords": { "type": "array", "items": { "type": "string" } },
+    "hashtags": { "type": "array", "items": { "type": "string" } },
+    "tags": { "type": "array", "items": { "type": "string" } },
+    "thumbnail_requirements": {
+      "type": "object",
+      "properties": {
+        "visual_composition": { "type": "string" },
+        "overlay_text": { "type": "string", "maxLength": 30 },
+        "focal_subject": { "type": "string" },
+        "color_contrast_notes": { "type": "string" }
+      },
+      "required": ["visual_composition", "overlay_text"]
+    },
+    "chapters": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "timestamp": { "type": "string" },
+          "title": { "type": "string" }
+        },
+        "required": ["timestamp", "title"]
+      }
+    },
+    "compliance": {
+      "type": "object",
+      "properties": {
+        "made_for_kids": { "type": "boolean" },
+        "contains_synthetic_media": { "type": "boolean" },
+        "synthetic_media_disclosure_required": { "type": "boolean" },
+        "copyright_clearance_notes": { "type": "string" }
+      },
+      "required": ["made_for_kids", "contains_synthetic_media"]
+    },
+    "pre_publish_checklist": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  },
+  "required": ["title", "description", "compliance", "chapters"]
+}
