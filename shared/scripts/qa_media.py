@@ -188,6 +188,27 @@ def run_qa(
             pass
 
     # 1. Probe streams
+    if not find_binary("ffprobe"):
+        return {
+            "project_id": project_id,
+            "media_path": media_abs,
+            "qa_timestamp": datetime.datetime.now(datetime.timezone.utc).isoformat(),
+            "status": "FAILED_CRITICAL_CHECKS",
+            "probed_metrics": {
+                "duration_sec": 0.0,
+                "resolution": "0x0",
+                "video_codec": "none",
+                "audio_codec": "none"
+            },
+            "automated_checks": {
+                "black_frames": {"passed": False, "drop_count": 0, "intervals": []},
+                "audio_loudness": {"passed": False, "integrated_lufs": -99.0, "target_lufs": target_lufs, "true_peak_db": -99.0},
+                "license_compliance": {"passed": False, "unverified_assets_count": 0}
+            },
+            "mandatory_human_review_items": MANDATORY_HUMAN_REVIEW_ITEMS,
+            "verdict_summary": "ffprobe executable not found in PATH. Install ffmpeg/ffprobe to probe media."
+        }
+
     probe_data = probe_media_file(media_abs)
     video_stream = next((s for s in probe_data.get("streams", []) if s.get("codec_type") == "video"), None)
     audio_stream = next((s for s in probe_data.get("streams", []) if s.get("codec_type") == "audio"), None)

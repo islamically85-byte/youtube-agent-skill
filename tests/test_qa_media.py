@@ -23,8 +23,11 @@ class TestQAMedia(unittest.TestCase):
         self.assertEqual(len(report["mandatory_human_review_items"]), 5)
 
     def test_synthetic_demo_video_qa(self):
+        import shutil
         if not os.path.exists(SYNTHETIC_DEMO_MP4):
             self.skipTest("Synthetic demo MP4 not present")
+        if not shutil.which("ffprobe") or not shutil.which("ffmpeg"):
+            self.skipTest("ffmpeg/ffprobe not installed in environment")
 
         report = run_qa(SYNTHETIC_DEMO_MP4, manifest_path=DEMO_MANIFEST)
         self.assertEqual(report["status"], "TECHNICALLY_VALID_PENDING_REVIEW")
