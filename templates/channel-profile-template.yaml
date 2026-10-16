@@ -1,0 +1,41 @@
+# Channel Profile Template — YouTube Agent Studio
+# Copy this file to your channel folder or save as ~/.claude/youtube/channel-profile.yaml
+
+channel_name: "My Channel Name"
+channel_handle: "@myhandle"
+
+target_audience:
+  primary_persona: "Aspiring creators and tech enthusiasts looking to build practical projects."
+  geography: "Global / English-speaking"
+  language: "en"
+  script_preference: "Latin"
+  viewer_level: "intermediate" # beginner, intermediate, advanced, general
+
+voice_and_tone:
+  persona_archetype: "Encouraging Mentor / Pragmatic Practitioner"
+  pacing: "Fast-paced, high information density, minimal filler"
+  phrases_we_use:
+    - "Let's test this directly"
+    - "Here is what happens under the hood"
+    - "The real takeaway is..."
+  words_we_never_use:
+    - "game-changer"
+    - "insane hack"
+    - "unlock your potential"
+    - "dive right in"
+  unsubstantiated_claims_policy: "Strictly cite sources; never claim unverified statistics."
+
+formats:
+  primary_format: "Educational Video Essays & Code Walkthroughs"
+  target_runtime_minutes: 8.5
+  shorts_strategy: "Extract 2 high-impact standalone clips per long-form upload"
+  visual_style: "Clean screen recordings, warm desk key light, minimal kinetic typography"
+
+production_constraints:
+  weekly_hours_available: 10
+  editing_tools:
+    - "DaVinci Resolve"
+    - "Audacity"
+  ai_tools_authorized:
+    - "Claude"
+    - "ChatGPT"

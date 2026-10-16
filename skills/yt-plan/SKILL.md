@@ -1,46 +1,51 @@
 ---
 name: yt-plan
 description: >-
-  Plan a week or a month of YouTube uploads - what to post, when, and in
-  what order, sized to the creator's actual capacity. Use for "plan my
-  week", "content calendar", "what should I post", "I have no idea what to
-  make next".
+  Architect sustainable weekly or monthly YouTube publishing calendars calibrated to real creator
+  production capacity, balancing anchor productions, low-friction content, and strategic Shorts.
 ---
 
-# yt-plan
+# yt-plan — Capacity-Calibrated Content Planning
 
-A plan that does not fit the week is a list of regrets. Ask two questions before writing anything:
-**how many hours do you actually have**, and **what is already half-made**.
+A publishing schedule that ignores production realities leads directly to creator burnout. This workflow builds sustainable content calendars by sizing commitments to **available creator hours** and distinguishing **anchor tentpole videos** from **low-friction repurposed assets**.
 
-## Before you write
+## Capacity Assessment (Ask First)
+Before populating a calendar, establish:
+1. **Available Production Hours/Week**: (e.g., 6 hours part-time vs. 30 hours full-time).
+2. **Current Asset Backlog**: Existing footage, half-edited drafts, or evergreen topics already outlined.
+3. **Primary Audience & Niche**: Target viewer habits and optimal upload windows.
 
-1. Read `~/.claude/youtube/voice.md` if it exists. That is the user's voice profile: how they talk
-   on camera, the words they never use, who they are talking to, what they will not claim. If it
-   does not exist, ask for **three of their own videos**, read or transcribe them, infer the voice,
-   and write the file. A script in the wrong voice is worse than no script, because they have to
-   read it out loud.
-2. Never invent a number, a result or a source. If a figure would strengthen it and you do not have
-   one, ask for it or write the line without it.
+## Production Hierarchy
+Structure the publishing cycle around three distinct content tiers:
 
-## The shape of a week
+- **Tier 1: Anchor Tentpole (High Effort)**
+  - Frequency: 1–2 per month (or bi-weekly for full-time teams).
+  - Characteristics: Original research, heavy scripting, custom B-roll, extensive edits, multi-concept packaging.
+  - Objective: Subscriber acquisition, high browse-feature reach, authority building.
 
-- **One anchor.** The video the week is for. It gets the most time and it goes out on the day the
-  channel's own analytics say is best - ask for that, do not assume Tuesday.
-- **One cheap one.** Built from something that exists: a clip, a reaction, a follow-up to the
-  comment that got the most replies last week.
-- **Shorts from the anchor.** Three, cut from the long video, not written separately. `/yt-shorts`
-  finds them.
+- **Tier 2: Fast-Turnaround / Frictionless (Medium/Low Effort)**
+  - Frequency: 1 per week.
+  - Characteristics: Structured commentary, Q&A, live stream replay cutdown, reaction to industry news, or single-concept walkthroughs.
+  - Objective: Feed regularity, community engagement, high retention with modest edit overhead.
 
-Three uploads on a seven-day week, not seven. A plan that posts daily is not a plan anyone
-recognises, and the empty days are what make the filled ones survive a bad week.
+- **Tier 3: Strategic Shorts / Vertical Clips (Repurposed)**
+  - Frequency: 2–4 per week.
+  - Characteristics: Isolated high-impact moments cut from Tier 1 or Tier 2 uploads using `/yt-shorts`.
+  - Objective: Algorithm surface testing, new audience discovery, funnel to long-form.
 
-## What to hand back
+## Sample Weekly Blueprint (10–12 Hours Budget)
+| Day | Phase | Deliverable | Est. Hours |
+|---|---|---|---|
+| **Mon** | Ideation & Packaging | 3 Title/Thumb concepts via `/yt-package` | 1.5 hrs |
+| **Tue** | Scripting | Hook panel & outline via `/yt-script` | 2.5 hrs |
+| **Wed** | Recording | Batch record A-roll + screen capture | 2.0 hrs |
+| **Thu** | Assembly & Tightening | Generate EDL via `/yt-edit`, rough cut | 3.0 hrs |
+| **Fri** | Polish & Packaging | Chapters, SEO, and thumbnail brief | 1.5 hrs |
+| **Sat** | Distribution | Publish Tier 2 video + schedule 2 Shorts | 1.0 hr |
+| **Sun** | Community & Review | Comment triage via `/yt-comment` | 0.5 hr |
 
-A table: day, format, working title, the one sentence it promises, and what already exists for it.
-Then the honest line at the bottom - how many hours this costs, and what to drop first if the week
-goes wrong.
-
-## The gate
-
-Nothing here publishes. This skill writes and you publish. Every output ends in a block the user
-copies, and the last line of every run is the question: **ship it, or change it?**
+## What to Hand Back
+1. Complete content calendar with titles, formats, and scheduled dates.
+2. Production workload breakdown per video (Script, Record, Edit, Package).
+3. Dependency checklist (what must be recorded first to feed downstream Shorts).
+4. Final check: **Confirm schedule feasibility or adjust hours?**

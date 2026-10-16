@@ -1,39 +1,38 @@
 ---
 name: yt-chapters
 description: >-
-  Write YouTube chapters from a transcript, validated against YouTube's own
-  rules so they actually render. Use for "add chapters", "timestamps",
-  "break this video into sections".
+  Generate and validate YouTube chapter timestamps from transcripts, strictly enforcing YouTube's
+  three platform formatting rules so chapters render correctly on web and mobile players.
 ---
 
-# yt-chapters
+# yt-chapters — YouTube Platform Chapter Validation
 
+Chapters break long-form videos into scannable segments, boosting average viewer duration and enabling Google Search "Key Moments" indexing. If a chapter block violates YouTube's rules by even one character, YouTube silently ignores the entire block.
+
+## Tools Available
+Run the self-contained chapters utility in this directory:
 ```bash
+# Generate chapters from a transcript
 python3 chapters.py transcript.srt --target 8
+python3 chapters.py transcript.vtt --json
+
+# Validate an existing description chapter block
+python3 chapters.py --validate "0:00 Intro\n1:15 Step 1\n3:45 Step 2"
 ```
 
-## The rules, which are not optional
+## The Non-Negotiable YouTube Chapter Rules
+1. **Rule 1: Must Start at 00:00 (or 0:00)**: If the first timestamp is 00:05 or missing, chapters fail to activate.
+2. **Rule 2: Minimum of Three Chapters**: A list with only two timestamps will not render on the scrubber bar.
+3. **Rule 3: Minimum 10 Seconds per Chapter**: Any chapter shorter than 10 seconds causes the entire block to be discarded.
+4. **Rule 4: Strict Chronological Order**: Timestamps must progress forward in time without overlapping ranges.
 
-A chapter list that breaks any of these silently does not become chapters at all - the block just
-sits in the description doing nothing:
+## Writing Engaging Chapter Titles
+Raw transcripts often suggest dry technical tags ("Section 1", "Database"). Convert topic words into **benefit-driven, curiosity-inducing titles**:
+- Dry: `02:15 Memory Leak Fix`
+- Engaging: `02:15 The Hidden Memory Leak Slowing Down Your App`
 
-- The first entry must be **00:00**.
-- There must be **at least three**.
-- Each must be **at least 10 seconds** long.
-
-The tool checks all three and tells you when a list is invalid rather than letting you paste it.
-
-## Retitle every line
-
-`chapters.py` finds the BOUNDARIES well - it scores the pauses you actually took by how much the
-vocabulary shifts across them. The titles it emits are the topic words, and they are a draft. A
-chapter called "Thumbnails Titles Packaging" is a placeholder. Rewrite each one as the promise of
-that section, in the user's voice, three to five words.
-
-Chapters are also a retention diagnostic: if a section cannot be named in five words, it is two
-sections or it is filler.
-
-## The gate
-
-Nothing here publishes. This skill writes and you publish. Every output ends in a block the user
-copies, and the last line of every run is the question: **ship it, or change it?**
+## What to Hand Back
+1. Formatted chapter block ready to paste directly into your video description.
+2. Validation status confirming compliance with YouTube's 4 rules.
+3. Total chapter count and average section duration.
+4. Final check: **Ship it into the description, or retitle sections?**

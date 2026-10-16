@@ -1,41 +1,49 @@
 ---
 name: yt-retention
 description: >-
-  Read a YouTube Studio audience-retention export and find where viewers
-  actually leave, then say what to change. Use for "why do people stop
-  watching", "my retention is bad", a pasted retention chart or CSV, or "fix
-  my pacing".
+  Diagnose audience drop-off from YouTube Studio retention CSV exports, pinpointing hook leaks,
+  specific cliff moments, and middle pacing slides with aligned transcript dialogue.
 ---
 
-# yt-retention
+# yt-retention — Audience Retention Diagnostic Engine
 
-The retention graph is the only honest feedback YouTube gives you. Almost nobody exports it.
+Audience retention data is YouTube's most unfiltered creator feedback. This skill diagnoses exactly where viewers abandon your videos and provides a single, high-leverage corrective action.
 
+## Tools Available
+Run the retention analyzer in this directory:
 ```bash
 python3 retention.py retention.csv --duration 600
 python3 retention.py retention.csv --transcript transcript.srt
+python3 retention.py retention.csv --json
 ```
 
-Getting the file: Studio -> a video -> Analytics -> Engagement -> the audience-retention chart ->
-the download icon -> "Audience retention".
+Export path in YouTube Studio: `Analytics` -> Select Video -> `Engagement` -> `Audience retention chart` -> `Export (CSV)`.
 
-## Three different problems
+## Three Distinct Diagnostic Phenomena
 
-- **HOOK LEAK** - what is lost in the first 30 seconds. Under 25% is healthy. This is always the
-  first thing to fix and it is always the first fifteen seconds of script, never the edit.
-- **CLIFFS** - single steep drops. A cliff is a moment: a topic change with no signposting, a
-  sponsor read, a long setup. With `--transcript` the tool prints what was being said there, which
-  is what makes the report actionable instead of interesting.
-- **SLIDE** - the steady bleed across the middle. A flat slide is pacing. The fix is cutting, not
-  rewriting.
+### 1. The Hook Leak (First 30 Seconds)
+- **Healthy**: Under 25% drop. (Viewer expectation matched the title/thumbnail promise).
+- **Leaking**: 25%–40% drop. (Viewer experienced friction: fluff intro, slow start, mismatched topic).
+- **Severe**: > 40% drop. (Viewer felt misled by the click packaging or bored by channel branding).
+- *Correction*: Never re-edit the body. Rewrite the first 15 seconds using `/yt-script`.
 
-## What to hand back
+### 2. Cliffs (Steep Local Drops > 0.8%)
+- Abrupt drops indicate a specific moment of friction:
+  - Boring tangents or over-explained details.
+  - Jarring audio/visual transitions or unannounced sponsor breaks.
+  - Discarded premises or premature answers to the central curiosity question.
+- *Correction*: With `--transcript`, the tool highlights the exact words spoken when viewers left.
 
-Name the single biggest leak and one change for it. Not a list of five. Then, only if asked, the
-rest. And if the hook leak is healthy and the slide is flat, say the video is fine and the problem
-is packaging - send them to `/yt-package`.
+### 3. The Slide (Pacing Bleed Across the Body)
+- A steady downward slope across the middle section indicates pacing exhaustion, not content failure.
+- *Correction*: Tighten runtime with `/yt-edit`. Cut redundant examples; do not rewrite the entire topic.
 
-## The gate
+### 4. Rewatch Spikes & Retention > 100%
+- Common on Shorts or high-density tutorial timestamps. The tool detects these loop points and flags them as high-interest visual anchors.
 
-Nothing here publishes. This skill writes and you publish. Every output ends in a block the user
-copies, and the last line of every run is the question: **ship it, or change it?**
+## What to Hand Back
+1. Retention Curve Summary: Start %, 30s Drop %, End % with health band.
+2. The Top 3 Cliff Moments: Exact timestamp, percentage lost, and spoken dialogue at that moment.
+3. **The Single Highest-Impact Fix**: One clear priority action (e.g., "Eliminate the 45-second backstory at 02:15").
+4. Secondary observations (optional technical pacing notes).
+5. Final step: **Ready to apply this fix to the next video outline?**

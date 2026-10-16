@@ -1,74 +1,183 @@
 #!/usr/bin/env python3
-"""swipe.py - rank collected videos by how far each beat its OWN channel, then name the formula.
+"""swipe.py - Rank collected competitor videos by multiple over each channel's OWN median.
 
-    python3 swipe.py collected.json
-    python3 swipe.py collected.json --min 2.0 --json
+Raw view counts rank channel subscriber size, not idea potency. A 400K video on a 2M-subscriber
+channel is an ordinary upload; a 400K video on a channel whose median is 25K represents a true
+niche outlier worth studying.
 
-Input is a list you collected - one object per video:
-
-    [{"channel":"Some Channel","title":"...","views":412000,"url":"...","duration":613}, ...]
-
-Raw view counts rank channel size, not ideas. A 400k video on a 2M-subscriber channel is a normal
-Tuesday; a 400k video on a channel whose median is 30k is the thing worth studying. So every video
-is scored as a MULTIPLE OF ITS OWN CHANNEL'S MEDIAN, which needs at least four videos per channel
-to mean anything - the tool says so rather than quietly ranking on noise.
-
-The formula comes from skills/yt-script/hooks.json, matched against the TITLE. It is a judgement
-about the words on screen, not a claim about why the video worked.
+Features:
+- Robust number parsing (handles '45.2K', '1.2M', commas, strings, ints)
+- Computes channel baseline median (requires >= 4 videos per channel to avoid noise)
+- Identifies hook formula on the title using the 21 hook patterns
+- Formats structured JSON or human-readable outlier leaderboard
 """
-import json, os, re, statistics, sys
 
-HERE = os.path.dirname(os.path.abspath(__file__))
-FORMULAS = json.load(open(os.path.join(HERE, "..", "yt-script", "hooks.json")))["hooks"]
+import argparse
+import json
+import os
+import re
+import statistics
+import sys
+from typing import Any, Dict, List, Optional, Tuple
 
-def classify(title):
+try:
+    from hookscore import FORMULAS
+except ImportError:
+    try:
+        from shared.scripts.hookscore import FORMULAS
+    except ImportError:
+        FORMULAS = []
+
+
+def parse_views_count(val: Any) -> float:
+    """Robustly parse view strings like '45.2K', '1.2M', '150,000' or raw ints."""
+    if val is None:
+        return 0.0
+    if isinstance(val, (int, float)):
+        return max(0.0, float(val))
+
+    s = str(val).strip().replace(",", "").upper()
+    multiplier = 1.0
+    if s.endswith("K"):
+        multiplier = 1000.0
+        s = s[:-1]
+    elif s.endswith("M"):
+        multiplier = 1000000.0
+        s = s[:-1]
+    elif s.endswith("B"):
+        multiplier = 1000000000.0
+        s = s[:-1]
+
+    try:
+        return max(0.0, float(s) * multiplier)
+    except ValueError:
+        return 0.0
+
+
+def classify_title(title: str) -> str:
+    if not FORMULAS:
+        return "Unclassified"
     scored = []
     for f in FORMULAS:
-        n = sum(1 for p in f["match"] if re.search(p, title, re.I))
-        if n: scored.append((n, f["name"]))
+        matches = sum(1 for p in f.get("match", []) if re.search(p, title, re.I))
+        if matches:
+            scored.append((matches, f.get("name", "Unclassified")))
     scored.sort(reverse=True)
     return scored[0][1] if scored else "Unclassified"
 
-def main():
-    a = sys.argv[1:]
-    as_json = "--json" in a; a = [x for x in a if x != "--json"]
-    lo = float(a[a.index("--min") + 1]) if "--min" in a else 1.5
-    files = [x for x in a if not x.startswith("--") and not re.match(r"^[\d.]+$", x)]
-    if not files or not os.path.exists(files[0]): print(__doc__); sys.exit(1)
-    rows = json.load(open(files[0]))
-    if isinstance(rows, dict): rows = rows.get("videos", [])
-    by = {}
-    for r in rows: by.setdefault(r.get("channel", "?"), []).append(r)
-    out, thin = [], []
-    for ch, vids in by.items():
-        views = [float(v.get("views", 0) or 0) for v in vids]
-        med = statistics.median(views) if views else 0
-        if len(vids) < 4:
-            thin.append((ch, len(vids)))
+
+def analyze_outliers(
+    videos: List[Dict[str, Any]],
+    min_multiple: float = 1.5,
+    min_channel_samples: int = 4
+) -> Dict[str, Any]:
+    channels: Dict[str, List[Dict[str, Any]]] = {}
+    for v in videos:
+        ch = v.get("channel") or v.get("channel_title") or "Unknown Channel"
+        channels.setdefault(ch, []).append(v)
+
+    outliers: List[Dict[str, Any]] = []
+    thin_channels: List[Dict[str, Any]] = []
+
+    for ch, vids in channels.items():
+        views_list = [parse_views_count(v.get("views")) for v in vids]
+        if len(vids) < min_channel_samples:
+            thin_channels.append({
+                "channel": ch,
+                "samples": len(vids),
+                "reason": f"Fewer than {min_channel_samples} videos collected; median is unreliable.",
+            })
             continue
+
+        median_views = statistics.median(views_list) if views_list else 0.0
+
         for v in vids:
-            m = (float(v.get("views", 0) or 0) / med) if med else 0
-            out.append({"channel": ch, "title": v.get("title", ""), "views": int(v.get("views", 0) or 0),
-                        "median": int(med), "multiple": round(m, 2),
-                        "formula": classify(v.get("title", "")), "url": v.get("url", "")})
-    out = [r for r in out if r["multiple"] >= lo]
-    out.sort(key=lambda r: -r["multiple"])
-    if as_json: print(json.dumps({"outliers": out, "skipped_thin_channels": thin}, indent=1)); return
-    print(f"\n  {len(rows)} videos across {len(by)} channels, outliers at {lo}x or better\n")
-    for r in out[:25]:
-        print(f"    {r['multiple']:5.2f}x  {r['views']:>9,}  vs {r['median']:>9,} median   {r['channel'][:22]:<22} {r['title'][:52]}")
-        print(f"            {r['formula']}")
-    if not out: print("    nothing cleared the threshold - collect more per channel or lower --min")
-    if thin:
-        print(f"\n  skipped {len(thin)} channel(s) with under 4 videos collected - a median off one or")
-        print( "  two videos is not a median: " + ", ".join(f"{c} ({n})" for c, n in thin[:6]))
-    counts = {}
-    for r in out: counts[r["formula"]] = counts.get(r["formula"], 0) + 1
-    if counts:
-        print("\n  formulas among the outliers")
-        for f, n in sorted(counts.items(), key=lambda x: -x[1]):
-            print(f"    {n:2d}x  {f}")
+            v_views = parse_views_count(v.get("views"))
+            multiple = round(v_views / median_views, 2) if median_views > 0 else 0.0
+            if multiple >= min_multiple:
+                outliers.append({
+                    "channel": ch,
+                    "title": v.get("title", ""),
+                    "views": int(v_views),
+                    "channel_median": int(median_views),
+                    "multiple": multiple,
+                    "formula": classify_title(v.get("title", "")),
+                    "url": v.get("url", ""),
+                })
+
+    outliers.sort(key=lambda x: -x["multiple"])
+
+    # Tally formulas across outliers
+    formula_counts: Dict[str, int] = {}
+    for o in outliers:
+        f = o["formula"]
+        formula_counts[f] = formula_counts.get(f, 0) + 1
+
+    return {
+        "total_videos_analyzed": len(videos),
+        "total_channels": len(channels),
+        "threshold_multiple": min_multiple,
+        "outlier_count": len(outliers),
+        "outliers": outliers,
+        "thin_channels_skipped": thin_channels,
+        "formula_distribution": dict(sorted(formula_counts.items(), key=lambda x: -x[1])),
+    }
+
+
+def main():
+    parser = argparse.ArgumentParser(description="Rank YouTube competitor videos by multiple over channel median.")
+    parser.add_argument("file", help="Path to JSON file containing list of videos")
+    parser.add_argument("--min", type=float, default=1.5, help="Minimum multiple over median (default: 1.5x)")
+    parser.add_argument("--samples", type=int, default=4, help="Minimum videos required per channel (default: 4)")
+    parser.add_argument("--json", action="store_true", help="Output machine-readable JSON")
+    args = parser.parse_args()
+
+    if not os.path.exists(args.file):
+        print(f"File not found: {args.file}", file=sys.stderr)
+        sys.exit(1)
+
+    try:
+        with open(args.file, "r", encoding="utf-8", errors="replace") as f:
+            data = json.load(f)
+        if isinstance(data, dict):
+            videos = data.get("videos") or data.get("items") or []
+        elif isinstance(data, list):
+            videos = data
+        else:
+            videos = []
+    except Exception as e:
+        print(f"Error parsing JSON file: {e}", file=sys.stderr)
+        sys.exit(1)
+
+    res = analyze_outliers(videos, min_multiple=args.min, min_channel_samples=args.samples)
+
+    if args.json:
+        print(json.dumps(res, indent=2, ensure_ascii=False))
+        return
+
+    print(f"\n  Analyzed: {res['total_videos_analyzed']} videos across {res['total_channels']} channels")
+    print(f"  Outliers meeting >= {res['threshold_multiple']}x channel median: {res['outlier_count']}\n")
+
+    for r in res["outliers"][:25]:
+        ch_str = r["channel"][:20]
+        title_str = r["title"][:50]
+        print(f"    {r['multiple']:5.2f}x  {r['views']:>10,} views (vs {r['channel_median']:>9,} median)  [{ch_str:<20}] {title_str}")
+        print(f"            Formula: {r['formula']}")
+
+    if not res["outliers"]:
+        print("    No videos exceeded the outlier multiple threshold. Collect more videos or lower --min.")
+
+    if res["thin_channels_skipped"]:
+        print(f"\n  Note: Skipped {len(res['thin_channels_skipped'])} channel(s) with < {args.samples} videos:")
+        for tc in res["thin_channels_skipped"][:5]:
+            print(f"    - {tc['channel']} ({tc['samples']} uploads)")
+
+    if res["formula_distribution"]:
+        print("\n  Top Hook Formulas Among Outliers:")
+        for form, count in res["formula_distribution"].items():
+            print(f"    {count:2d}x  {form}")
     print()
+
 
 if __name__ == "__main__":
     main()

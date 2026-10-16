@@ -1,0 +1,29 @@
+{
+  "text": "Why does every creator make the same packaging mistake? They write the title first, design a thumbnail, and pray the algorithm notices.",
+  "segments": [
+    {
+      "id": 0,
+      "start": 0.0,
+      "end": 3.8,
+      "text": "Why does every creator make the same packaging mistake?"
+    },
+    {
+      "id": 1,
+      "start": 4.1,
+      "end": 8.5,
+      "text": "They write the title first, design a thumbnail, and pray the algorithm notices."
+    },
+    {
+      "id": 2,
+      "start": 8.7,
+      "end": 9.9,
+      "text": "Um, you know..."
+    },
+    {
+      "id": 3,
+      "start": 10.8,
+      "end": 15.2,
+      "text": "Here is how to pair them into a single high-conversion click surface."
+    }
+  ]
+}

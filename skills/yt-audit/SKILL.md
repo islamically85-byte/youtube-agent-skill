@@ -1,48 +1,44 @@
 ---
 name: yt-audit
 description: >-
-  Audit a YouTube channel end to end - packaging, consistency, the first
-  fifteen seconds, and what to fix first. Use for "audit my channel", "why
-  isn't my channel growing", "review my videos", or a pasted channel URL.
+  Conduct comprehensive channel audits evaluating packaging consistency, title clickability,
+  audience promise alignment, and retention leaks, delivering exactly ONE highest-impact corrective priority.
 ---
 
-# yt-audit
+# yt-audit — Strategic Channel Health & Diagnostic Audit
 
-An audit that lists twenty problems is a way of avoiding the one that matters. This ends in ONE fix.
+An audit that lists 30 minor grievances is useless; it overwhelms the creator and creates paralysis. This audit cuts through the noise, evaluates the channel holistically, and delivers **ONE prioritized, highest-leverage operational fix**.
 
-## Before you write
+## Information to Review
+Ask for or analyze:
+1. **Public Channel Page**: Channel banner, description, recent 10 upload titles and thumbnails.
+2. **Private Analytics (If Creator Supplies)**: Impression click-through rate (CTR), average percentage viewed (APV), subscriber conversion rate.
+3. **Channel Identity**: Core target viewer and format goals (from `channel-profile.yaml` or `voice.md`).
 
-1. Read `~/.claude/youtube/voice.md` if it exists. That is the user's voice profile: how they talk
-   on camera, the words they never use, who they are talking to, what they will not claim. If it
-   does not exist, ask for **three of their own videos**, read or transcribe them, infer the voice,
-   and write the file. A script in the wrong voice is worse than no script, because they have to
-   read it out loud.
-2. Never invent a number, a result or a source. If a figure would strengthen it and you do not have
-   one, ask for it or write the line without it.
+## 5-Pillar Channel Diagnostic
+Evaluate the channel against 5 critical growth pillars:
 
-## What to look at, in this order
+1. **The 10-Title Set Test**:
+   - Read the last 10 titles in sequence. Do they serve a unified, identifiable audience, or does the channel wander across random topics?
+   - Are titles front-loaded with viewer benefit or bogged down in internal jargon?
+2. **Thumbnail Visual Hierarchy**:
+   - At smartphone scale (feed size), does the subject pop? Is contrast strong?
+   - Is text limited to 3 words, or is it repeating the title?
+3. **The First 15-Second Promise Alignment**:
+   - Does the video immediately confirm the click, or is there an agonizing channel intro / sponsor pitch before delivering value?
+4. **Content Architecture & Pacing**:
+   - Is the video runtime justified by the density of the idea, or is it padded?
+5. **Viewer Path & Library Flywheel**:
+   - Does every video end with an intentional bridge to another specific video on the channel, or does it trail off into a generic "thanks for watching"?
 
-1. **The last ten titles, as a set.** Read them as a list, the way the channel page shows them. Do
-   they promise different things? Run them through `../yt-package/title.py`. A channel where every
-   title is the same shape has a format problem, not a title problem.
-2. **The thumbnails, at feed size.** Shrink them. What survives? If three of them are unreadable at
-   that size, that is the fix and nothing else matters yet.
-3. **The first fifteen seconds of the three most recent.** Transcribe them and score with
-   `../yt-script/hookscore.py`. This is where most channels lose.
-4. **Upload rhythm.** Not frequency - CONSISTENCY. Six videos in one week and then nothing for a
-   month is worse than one a fortnight forever.
-5. **The retention shape**, if they can export it. `/yt-retention`.
+## The Single Highest-Impact Diagnosis
+Formulate the diagnosis into three sharp components:
+- **The Core Bottleneck**: Identify the exact constraint choking growth (e.g., "Packaging disconnect: CTR is 2.8% on high-retention content due to tiny thumbnail typography").
+- **The Root Cause**: Why this bottleneck is occurring.
+- **The Single Action Plan**: Exactly what to change on the very next upload.
 
-## What to hand back
-
-- The single biggest fix, named, with what to do this week.
-- Three things that are already working, so they do not break them. Be specific; "your energy is
-  good" is not an observation.
-- What NOT to do yet, and why.
-
-Never open an audit with praise you do not mean, and never end one with a list of twenty things.
-
-## The gate
-
-Nothing here publishes. This skill writes and you publish. Every output ends in a block the user
-copies, and the last line of every run is the question: **ship it, or change it?**
+## What to Hand Back
+1. Scorecard across the 5 pillars (Strengths & Vulnerabilities).
+2. Packaging review of recent uploads with specific before/after title revisions.
+3. **The #1 Highest-Impact Directive**: One clear focus for the upcoming week.
+4. Next step: **Ready to apply this directive to your next upload concept?**
