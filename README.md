@@ -1,111 +1,160 @@
-# The YouTube agent skill
+# YouTube Agent Studio v2.0
 
-Eleven Claude skills that run a YouTube channel. Free, MIT, no signup, no API key, nothing to
-connect.
+> **A professional, open-source production toolkit for YouTube creators — engineered natively for both Anthropic Claude and OpenAI ChatGPT.**
 
-One of them writes your script off 21 hook formulas and scores the hook before you waste a take on
-it. One lints the title and the thumbnail as a single pairing, because writing them separately is
-why half of your click surface says the same thing twice. One reads your audience-retention export
-and tells you the exact second people left and what you were saying when they did. One turns a
-transcript into an edit decision list. One finds the Shorts already hiding inside a long video. One
-goes and finds what is working in your niche and ranks it by how far each video beat its own
-channel, not by how big the channel is.
+[![Test & Build](https://github.com/islamically85-byte/youtube-agent-skill/actions/workflows/test.yml/badge.svg)](https://github.com/islamically85-byte/youtube-agent-skill/actions)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-brightgreen.svg)](#python-utilities)
+[![Platform: Claude & ChatGPT](https://img.shields.io/badge/Platform-Claude%20%7C%20ChatGPT-purple.svg)](#platform-editions)
 
-**Nothing gets published until you do it.** These skills write. You upload.
+---
 
-## Install
+## What is YouTube Agent Studio?
 
-Paste this into Claude:
+YouTube Agent Studio transforms AI into a rigorous pair-programmer for YouTube creators. Rather than generating generic summaries or formulaic fluff, it provides **17 specialized production workflows** backed by **seven zero-dependency Python utilities**.
 
-```
-https://github.com/islamically85-byte/youtube-agent-skill
+### Core Guarantees:
+- **100% Free & Offline-First**: No paid APIs, subscriptions, YouTube account logins, or API keys are required for core functionality.
+- **Never Fabricates Metrics**: Does not invent analytics, competitor statistics, scientific studies, or publication outcomes.
+- **You Remain in Control**: Every workflow concludes with an actionable artifact and the question: **Ship it, or change it?** Nothing is published automatically.
 
-Install this skill, then confirm /yt-script works.
-```
+---
 
-Or do it yourself, in Claude Code:
+## Dual Platform Editions
 
+YouTube Agent Studio provides two dedicated, independently maintainable distributions in the same repository:
+
+| Feature | Claude Edition (`skills/`) | ChatGPT Edition (`chatgpt/`) |
+|---|---|---|
+| **Invocation** | Slash commands (`/yt-script`, `/yt-package`, etc.) | Natural conversation & Master Orchestrator (`yt-studio`) |
+| **Skill Count** | 17 Dedicated Skills | 18 Workflows (17 Specialized + `yt-studio` Orchestrator) |
+| **Python Execution** | Local shell execution in Claude Code | Code Interpreter / local Python execution |
+| **Package Asset** | `release/youtube-agent-claude.zip` | `release/youtube-agent-chatgpt-skill.zip`<br>`release/youtube-agent-chatgpt-plugin.zip` |
+| **Installation Guide** | [docs/INSTALL-CLAUDE.md](docs/INSTALL-CLAUDE.md) | [docs/INSTALL-CHATGPT.md](docs/INSTALL-CHATGPT.md) |
+
+---
+
+## The Workflow Catalog
+
+### Upgraded Core Workflows (11)
+1. **`yt-script`**: Scriptwriting engine across long-form, Shorts, educational, faceless, and talking-head formats. Evaluates hooks against 21 creator formulas with language-aware speech rates.
+2. **`yt-package`**: Lints title and thumbnail as a single click surface. Checks mobile (40 char) and desktop (60 char) truncation, shouting, buzzwords, and keyword repetition.
+3. **`yt-edit`**: Generates Edit Decision Lists (EDL) from SRT, VTT, or Whisper JSON transcripts. Pinpoints dead-air pauses, verbal fillers, and repeated restart takes.
+4. **`yt-comment`**: 5-tier comment triage (questions, feedback, appreciation, moderation, noise) and authentic voice replies.
+5. **`yt-plan`**: Capacity-calibrated content calendars distinguishing anchor tentpole videos from low-friction Shorts.
+6. **`yt-viral`**: Ethical competitor intelligence ranking uploads by multiple over each channel's own median view count.
+7. **`yt-retention`**: Diagnoses hook leaks (first 30s), steep drop cliff moments, and pacing slides from YouTube Studio CSV exports.
+8. **`yt-shorts`**: Extracts standalone 9:16 vertical clips from long transcripts with rewritten spoken hooks and loop engineering.
+9. **`yt-seo`**: Search-intent descriptions, above-the-fold value summaries, verified timestamps, and secondary tags.
+10. **`yt-chapters`**: Validates YouTube's platform chapter constraints (starts at 00:00, >= 3 chapters, min 10s per chapter).
+11. **`yt-audit`**: 5-pillar holistic channel diagnostic delivering exactly **ONE highest-impact fix**.
+
+### Advanced Studio Workflows (6 New)
+12. **`yt-storyboard`**: Converts scripts into shot-by-shot visual storyboards with camera angles, subject blocking, lighting, and continuity bibles.
+13. **`yt-produce`**: Capability-aware AI video prompt generation for realistic live-action, 3D animation, and explainers with positive and negative constraints.
+14. **`yt-localize`**: Professional multilingual localization with native Pakistani Urdu script (`اردو`), ~130 WPM cadence adjustments, and RTL formatting.
+15. **`yt-factcheck`**: Rigorous claim verification classifying evidence into `[VERIFIED]`, `[DISPUTED]`, `[UNSUPPORTED]`, or `[REQUIRES CITATION]` with zero-hallucination rules.
+16. **`yt-upload-prep`**: Complete publication dossier with COPPA audience classification, synthetic-media disclosures, and audio LUFS pre-flight checklists.
+17. **`yt-experiment`**: Controlled A/B hypothesis design calibrated for YouTube Studio's native "Test & Compare" thumbnail tool.
+
+### Master Orchestration (ChatGPT)
+18. **`yt-studio`**: Central conductor that interprets conversational creator requests, sequences skills, verifies cross-asset consistency, and delivers consolidated production packages.
+
+---
+
+## Quickstart Installation
+
+### Claude Code Installation
 ```bash
+# Direct marketplace installation
+/plugin marketplace add islamically85-byte/youtube-agent-skill
+/plugin install youtube-agent
+
+# Or clone and copy into user skills folder
 git clone https://github.com/islamically85-byte/youtube-agent-skill.git
 cp -r youtube-agent-skill/skills/yt-* ~/.claude/skills/
 ```
 
-Or as a plugin:
+### ChatGPT Installation
+1. Download `release/youtube-agent-chatgpt-skill.zip` (or `youtube-agent-chatgpt-plugin.zip`).
+2. In ChatGPT, upload the skill archive into your Custom GPT configuration.
+3. Enable **Code Interpreter** to execute the Python tools.
+4. See [docs/INSTALL-CHATGPT.md](docs/INSTALL-CHATGPT.md) for step-by-step instructions.
 
-```
-/plugin marketplace add islamically85-byte/youtube-agent-skill
-/plugin install youtube-agent
-```
+---
 
-Project-local instead of global: copy the same folders into your repo's `.claude/skills/`. No Claude
-Code at all? Paste any single `SKILL.md` at the top of a chat and it runs as a mode. You lose the six
-Python tools, which is most of the point of `/yt-script`, `/yt-retention` and `/yt-edit`, but the
-rest works.
+## Python Utilities (Zero External Dependencies)
 
-Then spend ten minutes on [`templates/voice.md`](templates/voice.md). Copy it to
-`~/.claude/youtube/voice.md` and fill it in, or send Claude three of your own videos and say "write
-my voice.md from these". Every skill reads that file. It matters more here than anywhere else,
-because you have to say the words out loud.
-
-## The eleven
-
-| command | what it does |
-| --- | --- |
-| `/yt-script` | One idea into a script. Five hooks off [21 formulas](skills/yt-script/hooks.json), scored, then the spoken script with the retention beats marked. |
-| `/yt-package` | Title and thumbnail as one pairing, linted for truncation, duplication and vagueness. |
-| `/yt-edit` | A transcript into an edit decision list: dead air, filler cues, retakes, with timecodes. |
-| `/yt-comment` | The comment section triaged into four piles, then replies in your voice. Says which one to pin. |
-| `/yt-plan` | A week that fits the hours you actually have. One anchor, one cheap one, three Shorts. |
-| `/yt-viral` | What is working in your niche, ranked by multiple over each channel's own median. |
-| `/yt-retention` | Your retention export read properly: hook leak, the cliffs, the slide, and what to change. |
-| `/yt-shorts` | The Shorts already inside a long video, with a new first line written for each. |
-| `/yt-seo` | The description, the tags that are worth having, and the three queries this should win. |
-| `/yt-chapters` | Chapters from a transcript, validated against YouTube's own rules so they render. |
-| `/yt-audit` | The whole channel, ending in ONE fix rather than twenty. |
-
-## The six tools
-
-Every one of these runs on a clean Python 3 with no dependencies. They are the reason the skills are
-not just prompts.
+All tools run on standard Python 3.10+ without `pip install`:
 
 ```bash
-python3 skills/yt-script/hookscore.py --hook "one line"        # 5-property hook panel
-python3 skills/yt-package/title.py --title "..." --thumb "..." # title + thumbnail linter
-python3 skills/yt-edit/deadair.py transcript.srt               # edit decision list
-python3 skills/yt-chapters/chapters.py transcript.srt          # validated chapters
-python3 skills/yt-retention/retention.py retention.csv         # where they left, and why
-python3 skills/yt-viral/swipe.py collected.json --min 2.0      # outliers by own-channel multiple
+# Universal transcript parsing (SRT, VTT, Whisper JSON)
+python3 shared/scripts/transcript.py transcript.srt --language ur
+
+# Score a hook against 21 creator formulas
+python3 shared/scripts/hookscore.py --hook "97% of creators quit before video 30"
+
+# Lint title & thumbnail pairing
+python3 shared/scripts/title.py --title "Why 97% of Creators Quit" --thumb "STOP QUITTING"
+
+# Generate Edit Decision List (EDL) from transcript
+python3 shared/scripts/deadair.py transcript.srt --floor 0.35 --json
+
+# Validate YouTube platform chapters
+python3 shared/scripts/chapters.py transcript.srt --target 8
+
+# Diagnose audience retention leaks
+python3 shared/scripts/retention.py retention.csv --transcript transcript.srt
+
+# Rank competitor outliers against channel median
+python3 shared/scripts/swipe.py competitor_videos.json --min 2.0
 ```
 
-## The fine print
+---
 
-The part most packs leave out.
+## Example ChatGPT Orchestration
 
-**It does not publish.** YouTube's Data API would allow it with your own OAuth, which makes this
-pack different from the LinkedIn and Instagram ones, where posting is not available at all. It is
-still not built here: every skill ends in a block you copy and a question — ship it, or change it?
-Anything that claims to run your channel unattended should be read with that distinction in mind.
+You can prompt ChatGPT conversationally without remembering commands:
 
-**`hookscore.py` is a heuristic, not a predictor.** The panel was built and calibrated against 74
-real short-form hooks (the first 15 seconds of auto-captions, top-8 and bottom-8 by views across
-five channels). It separates deliberately bad hooks from real ones well. It separates a given
-creator's hits from their own misses barely at all. A low score is a reason to look again; a high
-score is not a promise.
+> **"Create a complete YouTube production package about emotional abuse, in Pakistani Urdu, with four realistic 10-second video scenes, a thumbnail concept, video metadata and an upload checklist."**
 
-**The formula classifier is about the words, not the result.** When `/yt-viral` says a title used
-The Statistic, that is a judgement about the title you can see, not a claim about why the video got
-its views.
+`yt-studio` will automatically:
+1. Verify clinical psychological claims via `yt-factcheck`.
+2. Lint non-overlapping packaging via `yt-package`.
+3. Draft a spoken script in authentic Pakistani Urdu script (`اردو`) via `yt-script` & `yt-localize`.
+4. Generate 4 modular 10-second realistic video generation prompts with negative constraints via `yt-produce`.
+5. Assemble description, validated chapters, and compliance disclosures via `yt-upload-prep`.
 
-**`/yt-viral` reads, it does not scrape.** Public listings only. It never logs in as you and never
-touches your credentials.
+---
 
-**Tags barely matter** and this pack says so instead of selling you a tag generator.
+## Automated Quality Assurance
 
-**Nothing invents a number.** If a skill wants a figure it does not have, it asks you for it or
-writes the line without it.
+YouTube Agent Studio includes an automated test suite with **56 unit, integration, and behavioral tests**:
 
-## Licence
+```bash
+# Run the complete test suite
+python3 -m unittest discover -s tests -t . -v
 
-MIT. Use it, change it, ship it.
+# Build and validate release archives
+python3 scripts/build-releases.py
+```
 
-Based on the original project by [Jake Schincariol](https://github.com/Jakeschincariol/youtube-agent-skill). Maintained by ABDUL MUEED LASHARY.
+---
+
+## Documentation Directory
+- [Audit Findings & Remediation](docs/AUDIT-REPORT.md)
+- [Claude Installation Guide](docs/INSTALL-CLAUDE.md)
+- [ChatGPT Installation Guide](docs/INSTALL-CHATGPT.md)
+- [Compatibility & Comparison Matrix](docs/COMPATIBILITY.md)
+- [Repository Architecture](docs/ARCHITECTURE.md)
+- [Security & Integrity Policy](docs/SECURITY.md)
+- [Contributing Guidelines](docs/CONTRIBUTING.md)
+- [Changelog](CHANGELOG.md)
+
+---
+
+## Upstream Attribution & License
+
+- Original project by [Jake Schincariol](https://github.com/Jakeschincariol/youtube-agent-skill).
+- Extended, architected, and maintained by **ABDUL MUEED LASHARY**.
+- Released under the open-source **[MIT License](LICENSE)**.
