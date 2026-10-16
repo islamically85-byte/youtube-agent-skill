@@ -1,45 +1,49 @@
 ---
 name: yt-viral
 description: >-
-  Find what is actually working in the user's niche on YouTube and rank it
-  by how far each video beat its own channel, then name the formula. Use for
-  "what's working right now", "find viral videos in my niche", "why did this
-  blow up", competitor research, or a swipe file.
+  Conduct ethical niche and competitor research by ranking videos against each channel's own median
+  performance, identifying genuine narrative outliers, and classifying winning packaging patterns.
 ---
 
-# yt-viral
+# yt-viral — Ethical Outlier & Competitor Intelligence
 
-Raw view counts rank channel size, not ideas. This ranks by **multiple over each channel's own
-median**, which is the only version of the question that is about the video.
+Raw view counts reflect channel subscriber size, not idea quality. A 500K video on a 5M-subscriber channel is an average Tuesday; a 500K video on a channel whose median upload receives 20K views represents a genuine **outlier multiple (25x)** that resonated beyond its subscriber base.
 
+## Tools Available
+Run the outlier detection script in this directory:
 ```bash
 python3 swipe.py collected.json --min 2.0
+python3 swipe.py competitor_batch.json --json
 ```
 
-## Collecting the input
-
-You need at least **four videos per channel** or a median means nothing, and the tool will skip the
-channel and tell you it did. Collect them however the user prefers - `yt-dlp --flat-playlist -J`
-against a channel URL is the fastest, the public page works, a manual list works.
-
+## Collecting Verified Data
+Input is a JSON array of videos from public creator listings:
 ```json
-[{"channel":"...","title":"...","views":412000,"url":"...","duration":613}]
+[
+  {"channel": "Creator A", "title": "...", "views": 185000, "url": "...", "duration": 620},
+  {"channel": "Creator A", "title": "...", "views": 12000, "url": "...", "duration": 480}
+]
 ```
+> **ETHICAL INTEGRITY RULES**:
+> 1. **Never invent metrics or view counts**: If a number is unknown, collect it or omit it.
+> 2. **Sample Size Caveat**: Requires at least **4 videos per channel** to compute a meaningful median. Thin channels are flagged and skipped.
+> 3. **Hypothesis vs. Fact**: Classifying a title formula describes the visible phrasing; it is an analytical hypothesis, never an absolute explanation of YouTube recommendation mechanics.
 
-**Read, do not scrape.** Public listings only, never a logged-in session, never the user's own
-account credentials.
+## Analytical Methodology
 
-## Reading the output
+1. **Calculate Channel Baseline**: Find the statistical median views across each creator's recent comparable uploads.
+2. **Compute Outlier Multiples**: Score each video by `Views / Channel Median`.
+   - Normal: 0.8x – 1.3x
+   - Strong: 1.5x – 2.9x
+   - Breakout Outlier: >= 3.0x
+3. **Classify Hook & Packaging Patterns**: Check which of the 21 proven hook formulas appeared in the outlier titles (e.g., The Statistic, The Contrarian Warning, Someone Else's Result).
+4. **Isolate Structural Elements**:
+   - What curiosity gap was opened in the title?
+   - What emotional stake or urgency was introduced?
+   - Did the video capitalize on a major trend or evergreen search intent?
 
-The multiple is the signal. The formula line is a judgement about the TITLE, matched against
-[the 21 formulas](../yt-script/hooks.json) - it is not a claim about why the video worked, and you
-should say so when you present it.
-
-What to hand back: the top five with their multiples, the formula each used, and the ONE structural
-thing they share. Then the harder line - which of those the user could actually make this week, in
-their voice, with what they have.
-
-## The gate
-
-Nothing here publishes. This skill writes and you publish. Every output ends in a block the user
-copies, and the last line of every run is the question: **ship it, or change it?**
+## What to Hand Back
+1. Ranked leaderboard of verified outliers with their respective channel median multiples.
+2. Breakdown of recurring title formulas and thumbnail visual patterns among the outliers.
+3. Identified content gaps: topics that over-performed in the niche but were left unexplained.
+4. Actionable hypotheses for your own channel: **Which concept should we adapt into `/yt-package`?**

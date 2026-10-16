@@ -1,81 +1,163 @@
 #!/usr/bin/env python3
-"""title.py - lint a YouTube title and thumbnail pairing before you publish it.
+"""title.py - Lint a YouTube title and thumbnail pairing as a unified system.
 
-    python3 title.py --title "..." --thumb "AI RAN IT"
-    python3 title.py titles.txt            # one per line, ranked
-    python3 title.py --title "..." --json
+The title and thumbnail form a single click surface. Repeating words across them wastes
+valuable real estate.
 
-The pairing is the unit, not the title. A title that repeats the thumbnail text wastes half the
-click surface, and that is the single most common mistake this checks for.
-
-Length: YouTube truncates around 60 characters on desktop search and around 40 on a mobile home
-feed. Both limits are reported because they are different failures - a desktop truncation loses the
-tail, a mobile one can lose the subject.
+Key checks:
+- Length: Truncation warnings at 40 chars (mobile feed) and 60 chars (desktop search). Hard limit 100.
+- Shouting: Flags more than two ALL-CAPS words.
+- Specificity: Checks for numbers, metrics, or proper nouns; flags vague buzzwords.
+- Front-loading: Checks if the primary subject appears early.
+- Thumbnail pairing: Flags duplicate vocabulary between thumbnail and title.
+- Thumbnail length: Checks for <= 3 words on thumbnail for readability at mobile sizes.
 """
-import json, re, sys, os
 
-DESKTOP, MOBILE, HARD = 60, 40, 100
-VAGUE = {"amazing","incredible","insane","crazy","huge","massive","ultimate","best","powerful",
-         "secret","revolutionary","mindblowing","epic","perfect","complete","everything"}
-STOP = {"the","a","an","of","for","to","in","on","and","or","is","are","with","your","you","my","i",
-        "this","that","it","how","what","why"}
+import argparse
+import json
+import os
+import re
+import sys
+from typing import Any, Dict, List, Optional, Set, Tuple
 
-def words(t): return re.findall(r"[a-z0-9']+", t.lower())
+DESKTOP_MAX = 60
+MOBILE_MAX = 40
+HARD_MAX = 100
 
-def check(title, thumb=None):
+VAGUE_WORDS = {
+    "amazing", "incredible", "insane", "crazy", "huge", "massive", "ultimate", "best", "powerful",
+    "secret", "revolutionary", "mindblowing", "epic", "perfect", "complete", "everything",
+    "unbelievable", "shocking", "gamechanger", "game-changer"
+}
+
+STOP_WORDS = {
+    "the", "a", "an", "of", "for", "to", "in", "on", "and", "or", "is", "are", "with", "your",
+    "you", "my", "i", "this", "that", "it", "how", "what", "why", "at", "by", "from", "as"
+}
+
+
+def words(t: str) -> List[str]:
+    return re.findall(r"[\w']+", t.lower(), re.UNICODE)
+
+
+def check_pairing(title: str, thumb: Optional[str] = None) -> Dict[str, Any]:
     t = title.strip()
     n = len(t)
-    issues, good = [], []
-    if n > HARD: issues.append(("length", f"{n} characters - YouTube's hard limit is {HARD}"))
-    elif n > DESKTOP: issues.append(("length", f"{n} characters - desktop search cuts near {DESKTOP}"))
-    else: good.append(f"{n} characters, inside the {DESKTOP}-character desktop cut")
-    if n > MOBILE:
-        head = t[:MOBILE].rsplit(" ", 1)[0]
-        issues.append(("mobile", f'a mobile feed shows about "{head}..." - check the subject survives'))
-    caps = [w for w in t.split() if len(w) > 2 and w.isupper()]
-    if len(caps) > 2: issues.append(("shouting", f"{len(caps)} all-caps words - two is the ceiling before it reads as spam"))
-    elif caps: good.append(f"{len(caps)} all-caps word for emphasis")
-    v = [w for w in words(t) if w in VAGUE]
-    if v: issues.append(("vague", f"{', '.join(sorted(set(v)))} - swap for a number, a name or a date"))
-    nums = re.findall(r"\d[\d,.]*%?", t)
-    if nums: good.append(f"carries a concrete figure ({', '.join(nums[:3])})")
-    else: issues.append(("no-number", "no number, date or name - the most reliable single fix"))
-    if t.endswith("?"): good.append("open question in the title")
-    front = [w for w in words(t)[:3] if w not in STOP]
-    if not front: issues.append(("front-load", "the first three words are all filler - move the subject forward"))
-    if thumb:
-        tw, hw = set(words(t)) - STOP, set(words(thumb)) - STOP
-        shared = tw & hw
-        if shared:
-            issues.append(("duplicate", f"thumbnail repeats the title on {', '.join(sorted(shared))} - "
-                                        "the thumbnail should say what the title does not"))
-        else:
-            good.append("thumbnail and title carry different words")
-        if len(words(thumb)) > 4:
-            issues.append(("thumb-length", f"{len(words(thumb))} words on the thumbnail - three is the ceiling at feed size"))
-    score = max(0, min(100, 100 - 14 * len(issues) + 4 * len(good)))
-    return {"title": t, "chars": n, "score": score, "issues": issues, "good": good}
+    issues: List[Tuple[str, str]] = []
+    good: List[str] = []
 
-def show(r):
-    print(f'\n  "{r["title"]}"')
-    print(f"  {r['chars']} chars   score {r['score']}/100")
-    for k, m in r["issues"]: print(f"    x  {k:<12} {m}")
-    for m in r["good"]:      print(f"    ok              {m}")
+    # Length constraints
+    if n > HARD_MAX:
+        issues.append(("length", f"{n} characters exceeds YouTube's hard 100-character limit."))
+    elif n > DESKTOP_MAX:
+        issues.append(("length", f"{n} characters. Desktop search truncates around {DESKTOP_MAX} characters."))
+    else:
+        good.append(f"{n} characters, safe for desktop search cutoffs.")
+
+    if n > MOBILE_MAX:
+        head = t[:MOBILE_MAX].rsplit(" ", 1)[0]
+        issues.append(("mobile", f"Mobile home feed cuts near {MOBILE_MAX} chars ('{head}...'). Verify subject visibility."))
+    else:
+        good.append(f"Inside {MOBILE_MAX} characters: fully visible on mobile feeds without truncation.")
+
+    # Capitalization
+    caps_words = [w for w in t.split() if len(w) > 2 and w.isupper() and w.isalpha()]
+    if len(caps_words) > 2:
+        issues.append(("shouting", f"{len(caps_words)} ALL-CAPS words. Maximum recommended is 2 before triggering spam filters."))
+    elif caps_words:
+        good.append(f"{len(caps_words)} emphasized uppercase word(s).")
+
+    # Specificity & Buzzwords
+    t_words = words(t)
+    vague_found = [w for w in t_words if w in VAGUE_WORDS]
+    if vague_found:
+        issues.append(("vague", f"Vague buzzwords detected: {', '.join(sorted(set(vague_found)))}. Swap for metrics or names."))
+
+    nums = re.findall(r"\b\d[\d,.]*%?\b", t)
+    if nums:
+        good.append(f"Carries concrete figure: {', '.join(nums[:3])}")
+    else:
+        issues.append(("no-number", "No concrete number, metric, or named entity found."))
+
+    if t.endswith("?"):
+        good.append("Open question structure creates curiosity.")
+
+    # Front-loading
+    front_tokens = [w for w in t_words[:3] if w not in STOP_WORDS]
+    if not front_tokens:
+        issues.append(("front-load", "First three words are common stopwords. Move core subject earlier."))
+    else:
+        good.append("Subject is front-loaded in opening words.")
+
+    # Thumbnail integration
+    if thumb:
+        thumb_clean = thumb.strip()
+        t_set = set(t_words) - STOP_WORDS
+        th_words = words(thumb_clean)
+        th_set = set(th_words) - STOP_WORDS
+        shared = t_set & th_set
+        if shared:
+            issues.append(("duplicate", f"Thumbnail repeats title word(s): {', '.join(sorted(shared))}. Use thumbnail for complementary visual hook."))
+        else:
+            good.append("Thumbnail and title use complementary, non-overlapping vocabulary.")
+
+        if len(th_words) > 4:
+            issues.append(("thumb-length", f"{len(th_words)} words on thumbnail. 3-4 words is the legibility ceiling on mobile."))
+        else:
+            good.append(f"Thumbnail text is punchy ({len(th_words)} words).")
+
+    score = max(0, min(100, 100 - (15 * len(issues)) + (4 * len(good))))
+
+    return {
+        "title": t,
+        "thumbnail_text": thumb.strip() if thumb else None,
+        "chars": n,
+        "score": score,
+        "issues": issues,
+        "good": good,
+    }
+
+
+def show_report(r: Dict[str, Any]):
+    print(f"\n  Title: \"{r['title']}\"")
+    if r.get("thumbnail_text"):
+        print(f"  Thumbnail: \"{r['thumbnail_text']}\"")
+    print(f"  Length: {r['chars']} chars | Score: {r['score']}/100")
+    for k, m in r["issues"]:
+        print(f"    [X] {k:<12} {m}")
+    for m in r["good"]:
+        print(f"    [OK]            {m}")
+
 
 def main():
-    a = sys.argv[1:]
-    as_json = "--json" in a; a = [x for x in a if x != "--json"]
-    thumb = a[a.index("--thumb") + 1] if "--thumb" in a else None
-    if "--title" in a:
-        rows = [check(a[a.index("--title") + 1], thumb)]
-    elif a and os.path.exists(a[0]):
-        rows = [check(l, thumb) for l in open(a[0]).read().splitlines() if l.strip()]
+    parser = argparse.ArgumentParser(description="Lint YouTube title and thumbnail pairing.")
+    parser.add_argument("file", nargs="?", help="File with titles (one per line)")
+    parser.add_argument("--title", help="Evaluate a single title")
+    parser.add_argument("--thumb", help="Thumbnail overlay text")
+    parser.add_argument("--json", action="store_true", help="Output JSON format")
+    args = parser.parse_args()
+
+    rows = []
+    if args.title:
+        rows = [check_pairing(args.title, args.thumb)]
+    elif args.file and os.path.exists(args.file):
+        with open(args.file, "r", encoding="utf-8", errors="replace") as f:
+            titles = [l.strip() for l in f if l.strip()]
+        rows = [check_pairing(t, args.thumb) for t in titles]
     else:
-        print(__doc__); sys.exit(1)
+        parser.print_help()
+        sys.exit(0)
+
     rows.sort(key=lambda r: -r["score"])
-    if as_json: print(json.dumps(rows, indent=1)); return
-    for r in rows: show(r)
+
+    if args.json:
+        print(json.dumps(rows, indent=2, ensure_ascii=False))
+        return
+
+    for r in rows:
+        show_report(r)
     print()
+
 
 if __name__ == "__main__":
     main()

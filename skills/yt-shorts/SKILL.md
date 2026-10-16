@@ -1,36 +1,49 @@
 ---
 name: yt-shorts
 description: >-
-  Find the Shorts hiding inside a long video and write them, using the
-  transcript to pick self-contained moments. Use for "cut this into shorts",
-  "clip this", "repurpose this video", "what should I clip".
+  Extract and re-engineer high-retention vertical Shorts (9:16) from long-form video transcripts,
+  providing rewritten hooks, framing instructions, caption styling, and clip manifests.
 ---
 
-# yt-shorts
+# yt-shorts — Long-Form to Vertical Shorts Extraction
 
-A Short cut out of a long video is not a clip of the best moment. It is a moment that **survives
-without the video around it**, which is a much smaller set.
+A successful Short extracted from a long video is **not** merely a favorite highlight. It is a moment that **survives completely independently** without needing the preceding 10 minutes of context.
 
-## Picking
+## Selection Criteria (The 3 Tests)
+Examine the transcript to identify spans of 25–55 seconds that satisfy all three requirements:
+1. **The Independent Entry**: The clip starts on a standalone thought. If understanding the first sentence requires prior context, it fails as a Short.
+2. **The Turn / Contrast**: Contains an immediate friction point, surprising revelation, counter-intuitive insight, or emotional shift.
+3. **The Punchy Resolution / Loop Point**: Concludes decisively or seamlessly loops back into the opening hook line.
 
-Read the transcript and find spans of 20-55 seconds where all three are true:
+> **FACTUAL INTEGRITY RULE**: Never distort, trim out caveats, or cherry-pick sentences in ways that misrepresent scientific, educational, medical, or religious facts for the sake of artificial viral shock.
 
-1. It opens on a complete thought. If the first sentence needs the previous minute, it is not a Short.
-2. There is a turn in it - a claim, then something that complicates or proves it.
-3. It ends on a line, not a trail-off.
+## Re-Engineering for 9:16 Vertical Video
+For each selected candidate clip:
+- **Rewritten Spoken Hook (0:00–0:03)**: Often long-form speech enters a topic too leisurely. Provide an alternate punchy opening line if recorded pickup is possible, or specify exact audio in-point.
+- **Vertical Framing & Aspect Ratio (9:16)**:
+  - Subject framing: Center-weighted crop, split-screen (speaker top + visual demonstration bottom), or dynamic pan-and-scan.
+  - Safe Margins: Avoid placing critical text near the right-side interaction icons (Like/Share/Comments) or bottom channel handle overlay.
+- **Dynamic Captions & Pacing**: Identify key emphasis words (highlight in high-contrast yellow/green).
+- **Loop Engineering**: Detail how the final sentence connects with the first sentence for continuous looping.
 
-Rank the candidates and show the user the top five with their timecodes and first line, so they can
-reject one without reading the whole transcript.
+## Clip Manifest Output
+Provide structured cutting parameters for each extracted Short:
+```json
+{
+  "clip_id": "short_01",
+  "title": "The 1 Habit Destroying Your Sleep",
+  "source_in": "04:12.500",
+  "source_out": "04:58.200",
+  "duration_seconds": 45.7,
+  "rewritten_hook_overlay": "Stop checking your phone at 11 PM.",
+  "framing": "9:16 vertical crop, speaker centered at top 60%, B-roll lower 40%",
+  "loop_point": "Final word connects directly to opening hook line"
+}
+```
 
-## Writing each one
-
-- **A NEW first line.** The long video's line assumes context this viewer does not have. Write the
-  replacement and run it through `../yt-script/hookscore.py`.
-- **On-screen text for the first two seconds**, different words from the spoken line.
-- **A loop point**: what the last line sets up so the first line answers it.
-- Vertical framing note - what gets cropped out of a 16:9 frame and whether that matters.
-
-## The gate
-
-Nothing here publishes. This skill writes and you publish. Every output ends in a block the user
-copies, and the last line of every run is the question: **ship it, or change it?**
+## What to Hand Back
+1. Ranked list of 3–5 viable Shorts candidates from the transcript.
+2. Exact source in/out timestamps and spoken text.
+3. Hook overlay text and vertical framing instructions for your editor.
+4. Exportable JSON clip manifest.
+5. Next step: **Confirm selected clip or request alternative moments?**

@@ -1,12 +1,12 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "youtube-agent-skill",
-  "description": "The YouTube agent skill pack for Claude",
+  "description": "YouTube Agent Studio: 17 professional production skills for creators",
   "owner": { "name": "Jake Schincariol", "url": "https://opusjake.ai" },
   "plugins": [
     {
       "name": "youtube-agent",
-      "description": "Eleven Claude skills that run a YouTube channel, including a scored hook panel, a title and thumbnail linter, an edit decision list, a retention reader and a virality engine.",
+      "description": "Seventeen professional skills for a complete YouTube production studio, including hook scoring, packaging linter, EDL cuts, retention diagnostics, chapters, shorts, storyboarding, multi-scene production, localization, and fact-checking.",
       "source": "./",
       "category": "productivity",
       "homepage": "https://github.com/islamically85-byte/youtube-agent-skill"
