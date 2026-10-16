@@ -4,6 +4,36 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.0.0] - 2026-10-17
+
+### Added
+- **Production-Capable Hybrid Creator Studio**:
+  - Implemented the complete 12-step hybrid production pipeline connecting provider checks, fact-checking, Pakistani Urdu voiceover, licensed stock curation, broadcast audio mastering, and strict technical QA.
+  - Added six new dedicated skills across both Claude (`skills/`) and ChatGPT (`chatgpt/skills/`):
+    * `yt-hybrid-production`: Provider resolution (`AVAILABLE`, `NO_CREDITS`, `NOT_CONNECTED`, `UNSUPPORTED_LANGUAGE`, `RATE_LIMITED`) and zero-credit budget enforcement.
+    * `yt-voice`: Pakistani Urdu TTS quality selection, 20–40s empirical benchmark evaluation, and numeral/acronym phonetic normalization (`42,000` -> `بیالیس ہزار`, `CDA` -> `سی ڈی اے`).
+    * `yt-assets`: Semantic story-to-shot director generating 70–95 cuts for a 6–7 minute timeline from verified permissive stock footage.
+    * `yt-audio`: Broadcast audio mastering engine (-14.0 LUFS dialogue, -24.0 dB ducked music, YouTube chapter markers, and `MISSING_MUSIC_WARNING` detection).
+    * `yt-render`: High-definition video assembler with Ken Burns pan/zoom motion and cue-synchronized ASS subtitles with reported allegations disclaimers.
+    * `yt-render-qc`: Strict technical QA prober enforcing duration bounds (360.0s – 420.0s for 6–7 minute documentaries, rejecting short narration tracks).
+- **Core Python Engines**:
+  - `shared/scripts/provider_engine.py`: Hybrid provider state resolver and auditable decision ledger.
+  - `shared/scripts/urdu_voice_engine.py`: Pakistani Urdu pronunciation rules, breath-level sentence chunking, and benchmark evaluator.
+  - `shared/scripts/stock_director.py`: Semantic story-to-shot director resolving accurate manifest counts (22 verified rows).
+  - `shared/scripts/editorial_motion.py`: Spoken cue-synchronized ASS motion subtitles badging investigative statistics strictly as **REPORTED ALLEGATIONS** (`رپورٹ کردہ الزامات`).
+  - `shared/scripts/audio_manager.py`: Broadcast audio mixing with EBU R128 loudness normalization and sidechain ducking.
+- **Full 6-7 Minute Screenplay**:
+  - `templates/documentaries/pakistan_property_screenplay.txt`: 832-word authentic Pakistani Urdu investigative documentary screenplay across 7 structured acts, calibrated for 360–420 seconds at ~130 WPM.
+- **GitHub Actions Workflow**:
+  - `.github/workflows/render-urdu-stock-documentary.yml`: Full cloud-rendering workflow supporting duration options, 16:9 / 9:16 aspect ratios, asset caching, artifact uploads, and failure debugging.
+- **Test Suite Expansion**:
+  - Added 23 new unit tests covering provider states, Urdu benchmarks, EDL generation, audio mixing, and strict duration bounds, bringing test suite to 95 passing tests.
+
+### Maintained By
+- Extended, architected, and maintained by **ABDUL MUEED LASHARY**. Upstream MIT copyright and attribution strictly preserved for original author Jake Schincariol.
+
+---
+
 ## [2.1.0] - 2026-10-17
 
 ### Added

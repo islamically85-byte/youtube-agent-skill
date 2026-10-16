@@ -44,6 +44,45 @@ class TestQAMedia(unittest.TestCase):
         self.assertTrue(checks["license_compliance"]["passed"])
         self.assertEqual(len(report["mandatory_human_review_items"]), 5)
 
+    def test_duration_bounds_failure_when_below_min(self):
+        import shutil
+        if not os.path.exists(SYNTHETIC_DEMO_MP4) or not shutil.which("ffprobe"):
+            self.skipTest("Synthetic demo or ffprobe missing")
+
+        # Demo is 4.0s. Requiring min 360.0s (e.g. 6-7 min documentary) MUST fail!
+        report = run_qa(SYNTHETIC_DEMO_MP4, min_duration=360.0, max_duration=420.0)
+        self.assertEqual(report["status"], "FAILED_CRITICAL_CHECKS")
+        self.assertFalse(report["automated_checks"]["duration_bounds"]["passed"])
+        self.assertIn("below minimum requirement", report["verdict_summary"])
+
+    def test_duration_bounds_success_when_within_range(self):
+        import shutil
+        if not os.path.exists(SYNTHETIC_DEMO_MP4) or not shutil.which("ffprobe"):
+            self.skipTest("Synthetic demo or ffprobe missing")
+
+        report = run_qa(SYNTHETIC_DEMO_MP4, min_duration=2.0, max_duration=10.0)
+        self.assertEqual(report["status"], "TECHNICALLY_VALID_PENDING_REVIEW")
+        self.assertTrue(report["automated_checks"]["duration_bounds"]["passed"])
+
+    def test_require_music_check_with_warning(self):
+        import shutil
+        if not os.path.exists(SYNTHETIC_DEMO_MP4) or not shutil.which("ffprobe"):
+            self.skipTest("Synthetic demo or ffprobe missing")
+
+        # Create temporary manifest with missing music warning
+        import tempfile, json
+        with tempfile.NamedTemporaryFile("w", suffix=".json", delete=False) as tf:
+            json.dump({"project_id": "test", "warnings": ["MISSING_MUSIC_WARNING"], "music_present": False}, tf)
+            t_path = tf.name
+
+        try:
+            report = run_qa(SYNTHETIC_DEMO_MP4, manifest_path=t_path, require_music=True)
+            self.assertEqual(report["status"], "FAILED_CRITICAL_CHECKS")
+            self.assertIn("music", report["verdict_summary"].lower())
+        finally:
+            if os.path.exists(t_path):
+                os.remove(t_path)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -2,7 +2,7 @@
 
 **Extension Maintainer:** ABDUL MUEED LASHARY  
 **Upstream Author & MIT Attribution:** Jake Schincariol  
-**Version:** 2.1.0  
+**Version:** 3.0.0  
 **License:** MIT  
 
 ---
@@ -12,16 +12,22 @@
 ```
 youtube-agent-skill/
 ├── .claude-plugin/              # Claude Code Plugin metadata
-│   ├── plugin.json              # Version 2.0.0 Claude manifest
+│   ├── plugin.json              # Version 3.0.0 Claude manifest
 │   └── marketplace.json         # Marketplace distribution schema
 │
-├── skills/                      # 24 Upgraded Claude Skills (Self-Contained)
-│   ├── yt-studio/               # Master Documentary Production Studio
+├── skills/                      # 30 Upgraded Claude Skills (Self-Contained)
+│   ├── yt-studio/               # Master 12-Step Hybrid Production Studio
+│   ├── yt-hybrid-production/    # Provider resolution & credit budget verification (provider_engine.py)
+│   ├── yt-voice/                # Pakistani Urdu TTS benchmark & phonetic normalizer (urdu_voice_engine.py)
+│   ├── yt-assets/               # Stock footage director & semantic shot planner (stock_director.py)
+│   ├── yt-audio/                # Broadcast audio mastering & ducking engine (audio_manager.py)
+│   ├── yt-render/               # Multi-track FFmpeg renderer & ASS motion subtitles (render_free.py)
+│   ├── yt-render-qc/            # Strict duration & technical QA gate (qa_media.py)
 │   ├── yt-stock-producer/       # Stock footage curation & licensing (validate_manifest.py)
 │   ├── yt-voice-urdu/           # Pakistani Urdu voiceover & audio mastering
-│   ├── yt-video-editor/         # FFmpeg multi-track video assembly (render_free.py)
+│   ├── yt-video-editor/         # FFmpeg multi-track video assembly
 │   ├── yt-motion-graphics/      # RTL Urdu typography, safe margins, subtitles
-│   ├── yt-production-qa/        # Automated media QA & human gate (qa_media.py)
+│   ├── yt-production-qa/        # Automated media QA & human gate
 │   ├── yt-credit-guard/         # Quota protection & zero-credit budget (credit_guard.py)
 │   ├── yt-script/               # Scripts, 21 hook formulas, hookscore.py
 │   ├── yt-package/              # Title & thumbnail linter (title.py)
@@ -44,51 +50,42 @@ youtube-agent-skill/
 ├── chatgpt/                     # Dedicated ChatGPT Edition
 │   ├── plugin.json              # OpenAI Plugin v1 manifest
 │   ├── .codex-plugin/           # Codex developer environment manifest
-│   ├── skills/                  # 24 Specialized workflows matching Claude
-│   ├── templates/               # Portable channel profiles
+│   ├── skills/                  # 30 Specialized workflows matching Claude
+│   ├── templates/               # Portable channel profiles & screenplays
 │   ├── references/              # Guides (Urdu, Factcheck, Chapters, Packaging)
-│   ├── scripts/                 # 11 standalone Python tools for Code Interpreter
+│   ├── scripts/                 # 16 standalone Python tools for Code Interpreter
 │   ├── schemas/                 # Project manifest & QA report schemas
 │   └── README.md                # Dedicated ChatGPT documentation
 │
 ├── shared/                      # Core Shared Assets & Schemas
 │   ├── scripts/                 # Canonical Python standard library tools
+│   │   ├── provider_engine.py   # Hybrid provider router & credit guard
+│   │   ├── urdu_voice_engine.py # Pakistani Urdu pronunciation & 20-40s benchmark
+│   │   ├── stock_director.py    # Semantic story-to-shot director (70-95 shots)
+│   │   ├── editorial_motion.py  # Cue-synchronized ASS subtitles with allegations disclaimers
+│   │   ├── audio_manager.py     # Broadcast audio mastering (-14 LUFS, -24 dB ducking)
+│   │   ├── render_free.py       # FFmpeg video timeline renderer
+│   │   ├── qa_media.py          # Technical QA prober with strict duration bounds
+│   │   ├── validate_manifest.py # Manifest schema and license checker
+│   │   └── credit_guard.py      # Zero-budget credit balance protector
 │   ├── schemas/                 # JSON Schemas (project-manifest, qa-report, etc.)
 │   └── fixtures/                # Real-world test fixtures & synthetic demo assets
 │
-├── templates/                   # Channel profiles and voice configurations
-│   ├── voice.md                 # Spoken voice and forbidden words
-│   ├── channel-profile-template.yaml
-│   └── channel-profiles/
-│       └── pakistani-urdu-awareness.yaml
+├── templates/                   # Channel profiles and production screenplays
+│   ├── channel-profiles/
+│   │   └── pakistani-urdu-awareness.yaml
+│   └── documentaries/
+│       └── pakistan_property_screenplay.txt # 6-7 minute Urdu investigative screenplay
 │
-├── docs/                        # Complete Engineering Documentation
-│   ├── RESEARCH-NOTE-FREE-PRODUCTION.md # Stock licensing, vidIQ audit, Urdu TTS benchmark
-│   ├── AUDIT-REPORT.md          # Baseline audit findings and remediation
-│   ├── INSTALL-CLAUDE.md        # Claude installation guide
-│   ├── INSTALL-CHATGPT.md       # ChatGPT installation guide
-│   ├── COMPATIBILITY.md         # Claude vs. ChatGPT comparison matrix
-│   ├── ARCHITECTURE.md          # Architecture & data contract specs
-│   ├── SECURITY.md              # Security, privacy, and integrity model
-│   └── CONTRIBUTING.md          # Open-source contribution guidelines
-│
-├── tests/                       # Automated Test Suite (72 Tests, 100% Passing)
-│   ├── test_validate_manifest.py # Manifest & license provenance tests
-│   ├── test_credit_guard.py     # Quota budget & balance protection tests
-│   ├── test_render_free.py      # FFmpeg command builder & path escaping tests
-│   ├── test_qa_media.py         # Media prober & EBU R128 loudness tests
-│   ├── test_transcript.py       # Universal transcript loader tests
-│   ├── test_hookscore.py        # 5-property panel tests
-│   ├── test_title.py            # Packaging linter tests
-│   ├── test_deadair.py          # EDL generator tests
-│   ├── test_chapters.py         # YouTube chapter constraint tests
-│   ├── test_retention.py        # CSV retention analysis tests
-│   ├── test_swipe.py            # Outlier multiple tests
-│   ├── test_skills_structure.py # Skill frontmatter validator (all 24 skills)
-│   ├── test_manifests.py        # Claude & ChatGPT manifest tests
-│   ├── test_packaging.py        # Zip archive verification tests
-│   └── evals/                   # 20 Behavioral evaluation scenarios
-│       └── test_behavioral_evals.py
+├── tests/                       # Automated Test Suite (95 Tests, 100% Passing)
+│   ├── test_provider_engine.py  # Provider state, fallback, and ledger tests
+│   ├── test_urdu_voice_engine.py# Benchmark passage, numerals, and chunking tests
+│   ├── test_stock_director.py   # EDL generation, 70-95 shots, and manifest row tests
+│   ├── test_audio_manager.py    # Loudness, ducking, chapters, and missing music tests
+│   ├── test_editorial_motion.py # Synchronized ASS generation & disclaimer tests
+│   ├── test_qa_media.py         # Strict duration bounds & loudness QA tests
+│   ├── test_skills_structure.py # Skill frontmatter validator (all 30 skills)
+│   └── ...                      # Comprehensive creators suite tests
 │
 ├── scripts/
 │   └── build-releases.py        # Packaging and validation script
@@ -99,7 +96,8 @@ youtube-agent-skill/
 │   └── youtube-agent-chatgpt-plugin.zip
 │
 ├── .github/workflows/           # CI/CD Workflows
-│   └── test.yml                 # Matrix testing on Python 3.10-3.13
+│   ├── test.yml                 # Matrix testing on Python 3.10-3.13
+│   └── render-urdu-stock-documentary.yml # End-to-end cloud rendering pipeline
 │
 ├── README.md                    # Main Repository README
 ├── CHANGELOG.md                 # Version History
@@ -112,26 +110,23 @@ youtube-agent-skill/
 
 All core tools return structured JSON whenever `--json` is passed:
 
-1. **`validate_manifest.py`**:
-   - Validates `project-manifest.json` against `project-manifest.schema.json`.
-   - Returns `{ "valid": bool, "manifest_path": str, "errors": list, "warnings": list, "clip_count": int, "credit_budget": int }`.
+1. **`provider_engine.py`**:
+   - Resolves provider state across `AVAILABLE`, `NO_CREDITS`, `NOT_CONNECTED`, `UNSUPPORTED_LANGUAGE`, `RATE_LIMITED`.
+   - Records all choices in an auditable ledger: `{ "resolved_provider": str, "provider_tier": str, "state": str, "ledger": dict }`.
 
-2. **`credit_guard.py`**:
-   - Enforces zero-credit baseline and pre-flight balance checks.
-   - Returns `{ "authorized": bool, "message": str, "details": { "tool": str, "action": str, "requested_cost_credits": int, "credit_budget": int, "available_balance": int|null, "free_alternative": str } }`.
+2. **`urdu_voice_engine.py`**:
+   - Evaluates audio against empirical 20-40s benchmark passage with required keywords.
+   - Normalizes numbers and acronyms: `{ "benchmark_passed": bool, "word_count": int, "measured_duration_sec": float, "calculated_wpm": float, "requires_human_listening_review": true }`.
 
-3. **`render_free.py`**:
-   - Constructs deterministic FFmpeg multi-track command combining stock video, normalized narration (-14 LUFS), and ducked music (-24 dB).
-   - Generates playable 1080p/Shorts MP4 with cross-platform filter path escaping.
+3. **`stock_director.py`**:
+   - Generates 70–95 shot EDL mapping narration acts to verified footage with intelligent reuse spacing.
+   - Returns `{ "manifest_rows_count": int, "total_edl_shots": int, "target_duration_sec": float, "avg_shot_duration_sec": float }`.
 
-4. **`qa_media.py`**:
+4. **`audio_manager.py`**:
+   - Broadcast audio mixing: -14.0 LUFS dialogue, -24.0 dB ducking, missing music warning detection.
+   - Generates YouTube chapters: `{ "voice_lufs": float, "music_attenuation_db": float, "music_present": bool, "missing_music_warning": str|null, "youtube_chapters": list }`.
+
+5. **`qa_media.py`**:
    - Probes media file with `ffprobe` and `ffmpeg` (blackdetect, ebur128).
-   - Returns `{ "project_id": str, "media_path": str, "status": "TECHNICALLY_VALID_PENDING_REVIEW"|"FAILED_CRITICAL_CHECKS", "probed_metrics": dict, "automated_checks": dict, "mandatory_human_review_items": list, "verdict_summary": str }`.
-
-5. **`transcript.py`**: Universal transcript parser (SRT, WebVTT, Whisper JSON).
-6. **`hookscore.py`**: 5-property panel score (0-100) and weakest property fix.
-7. **`title.py`**: Character counts, mobile/desktop issues, and vocabulary overlap.
-8. **`deadair.py`**: Edit decision list (EDL) with cut reasons, timecodes, and total trimmed runtime.
-9. **`chapters.py`**: Validated YouTube chapter list adhering to platform rules.
-10. **`retention.py`**: Hook leak percentage, cliff drop moments, and middle slide attrition.
-11. **`swipe.py`**: Outlier multiple leaderboard and hook formula classification.
+   - Enforces strict duration bounds (360.0s – 420.0s for 6–7 min documentary).
+   - Returns `{ "status": "TECHNICALLY_VALID_PENDING_REVIEW"|"FAILED_CRITICAL_CHECKS", "probed_metrics": dict, "automated_checks": dict, "mandatory_human_review_items": list }`.
