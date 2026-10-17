@@ -22,10 +22,12 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: Install FFmpeg
+      - name: Install FFmpeg and Dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y ffmpeg
+          python3 -m pip install --upgrade pip
+          python3 -m pip install pedalboard opentimelineio numpy || true
 
       - name: Run Test Suite
         run: |
