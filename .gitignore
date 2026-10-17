@@ -29,3 +29,6 @@ Thumbs.db
 
 # Temporary scratch outputs
 *.tmp
+output/test_*
+output/bench_frames/
+output/test_frames/
