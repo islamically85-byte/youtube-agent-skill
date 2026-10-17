@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Discrepancy Counter — 42,000 Files vs 6,000 Plots</title>
+<style>
+  /* Offline system typography stacks: Noto Naskh Arabic, Geeza Pro, Baghdad, Segoe UI, Arial */
+  :root {
+    --bg-color: #080c14;
+    --card-bg: rgba(15, 23, 42, 0.75);
+    --gold: #d4af37;
+    --gold-glow: rgba(212, 175, 55, 0.25);
+    --crimson: #ef4444;
+    --crimson-glow: rgba(239, 68, 68, 0.35);
+    --emerald: #10b981;
+    --text-primary: #f8fafc;
+    --text-muted: #94a3b8;
+    --border-color: rgba(255, 255, 255, 0.08);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Naskh Arabic", "Geeza Pro", Roboto, sans-serif;
+    overflow: hidden;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Main viewport canvas */
+  #motionCanvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+</style>
+</head>
+<body>
+
+<canvas id="motionCanvas" width="1920" height="1080"></canvas>
+
+<script>
+/**
+ * Deterministic Motion Graphics Renderer
+ * Pakistan Property Group Documentary — Evidence Visualization
+ * 42,000 Reported Files vs 6,000 Actual Land Plots
+ *
+ * Professional animation principles:
+ * - Anticipation before numerical rollups
+ * - Staggered entrances
+ * - Motivated cinematic drift (camera push 1.0 -> 1.04)
+ * - Restrained typography & documentary-grade shading
+ * - Prominent legal disclaimer
+ */
+
+const canvas = document.getElementById('motionCanvas');
+const ctx = canvas.getContext('2d');
+
+// Read configuration from query parameters
+const urlParams = new URLSearchParams(window.location.search);
+const totalDuration = parseFloat(urlParams.get('duration')) || 15.0; // seconds
+const targetFps = parseInt(urlParams.get('fps')) || 30;
+const totalFrames = Math.round(totalDuration * targetFps);
+const isTransparent = urlParams.get('transparent') === '1' || urlParams.get('alpha') === '1';
+
+// Easing functions
+function easeOutCubic(t) { return 1 - Math.pow(1 - t, 3); }
+function easeInOutCubic(t) { return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; }
+function easeOutBack(t, c1 = 1.70158) {
+  const c3 = c1 + 1;
+  return 1 + c3 * Math.pow(t - 1, 3) + c1 * Math.pow(t - 1, 2);
+}
+function clamp(val, min = 0, max = 1) { return Math.max(min, Math.min(max, val)); }
+
+// Drawing function for a specific time / frame
+function renderFrame(frameIdx, totalF = totalFrames, fps = targetFps) {
+  const width = canvas.width;
+  const height = canvas.height;
+  const t = frameIdx / fps; // current time in seconds
+  const progress = clamp(frameIdx / totalF);
+
+  ctx.save();
+
+  // Transparent overlay or cinematic dark textured backdrop
+  if (isTransparent) {
+    ctx.clearRect(0, 0, width, height);
+  } else {
+    // Subtle cinematic camera push (1.00 -> 1.035 scale)
+    const zoom = 1.0 + progress * 0.035;
+    ctx.translate(width / 2, height / 2);
+    ctx.scale(zoom, zoom);
+    ctx.translate(-width / 2, -height / 2);
+
+    // Deep slate gradient backdrop
+    const bgGrad = ctx.createRadialGradient(width * 0.5, height * 0.45, 100, width * 0.5, height * 0.5, width * 0.85);
+    bgGrad.addColorStop(0, '#0c1322');
+    bgGrad.addColorStop(0.65, '#070a12');
+    bgGrad.addColorStop(1, '#020408');
+    ctx.fillStyle = bgGrad;
+    ctx.fillRect(0, 0, width, height);
+
+    // Subtle technical grid pattern
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.025)';
+    ctx.lineWidth = 1;
+    const gridSize = 80;
+    for (let x = 0; x < width; x += gridSize) {
+      ctx.beginPath();
+      ctx.moveTo(x, 0);
+      ctx.lineTo(x, height);
+      ctx.stroke();
+    }
+    for (let y = 0; y < height; y += gridSize) {
+      ctx.beginPath();
+      ctx.moveTo(0, y);
+      ctx.lineTo(width, y);
+      ctx.stroke();
+    }
+
+    // Top-left and bottom-right vignette glows
+    const goldAmbient = ctx.createRadialGradient(width * 0.25, height * 0.35, 10, width * 0.25, height * 0.35, 600);
+    goldAmbient.addColorStop(0, 'rgba(16, 185, 129, 0.06)');
+    goldAmbient.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = goldAmbient;
+    ctx.fillRect(0, 0, width, height);
+
+    const redAmbient = ctx.createRadialGradient(width * 0.75, height * 0.4, 10, width * 0.75, height * 0.4, 700);
+    redAmbient.addColorStop(0, 'rgba(239, 68, 68, 0.08)');
+    redAmbient.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = redAmbient;
+    ctx.fillRect(0, 0, width, height);
+  }
+
+  // ==========================================
+  // SECTION 1: HEADER & DOCUMENT BADGE (t: 0.2s - 1.5s)
+  // ==========================================
+  const headerProg = clamp((t - 0.2) / 1.0);
+  if (headerProg > 0) {
+    const headerAlpha = easeOutCubic(headerProg);
+    const headerY = 90 - (1 - easeOutCubic(headerProg)) * 18;
+
+    ctx.save();
+    ctx.globalAlpha = headerAlpha;
+
+    // Investigative badge pill
+    const badgeW = 420;
+    const badgeH = 34;
+    const badgeX = (width - badgeW) / 2;
+    ctx.fillStyle = 'rgba(212, 175, 55, 0.12)';
+    ctx.strokeStyle = 'rgba(212, 175, 55, 0.4)';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.roundRect(badgeX, headerY, badgeW, badgeH, 17);
+    ctx.fill();
+    ctx.stroke();
+
+    ctx.fillStyle = '#e2e8f0';
+    ctx.font = '600 13px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
+    ctx.textAlign = 'center';
+    ctx.letterSpacing = '2px';
+    ctx.fillText('INVESTIGATIVE EVIDENCE • RECORD COMPARISON', width / 2, headerY + 22);
+
+    // Native Urdu Main Title
+    ctx.fillStyle = '#ffffff';
+    ctx.font = '800 44px "Noto Naskh Arabic", "Geeza Pro", "Baghdad", "Arial", sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('منظور شدہ اراضی بمقابلہ جاری شدہ ممبر فائلیں', width / 2, headerY + 84);
+
+    // English subtitle
+    ctx.fillStyle = '#94a3b8';
+    ctx.font = '500 16px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
+    ctx.letterSpacing = '1px';
+    ctx.fillText('APPROVED PHYSICAL PLOTS VS REPORTED SALE OF MEMBERSHIP FILES', width / 2, headerY + 116);
+
+    ctx.restore();
+  }
+
+  // ==========================================
+  // SECTION 2: THE 6,000 ACTUAL PLOTS (t: 1.2s - 4.5s)
+  // ==========================================
+  const plotProg = clamp((t - 1.2) / 2.2);
+  const cardY = 320;
+  const cardW = 620;
+  const cardH = 460;
+  const leftX = width * 0.26 - cardW / 2;
+
+  if (plotProg > 0) {
+    ctx.save();
+    const enterAnim = easeOutCubic(clamp((t - 1.2) / 0.8));
+    ctx.globalAlpha = enterAnim;
+
+    // Card background
+    ctx.fillStyle = 'rgba(15, 23, 42, 0.7)';
+    ctx.strokeStyle = 'rgba(16, 185, 129, 0.35)';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.roundRect(leftX, cardY + (1 - enterAnim) * 25, cardW, cardH, 16);
+    ctx.fill();
+    ctx.stroke();
+
+    // Pillar base bar graphic (Height proportional to 6,000 / 42,000 = ~14.3%)
+    const maxBarH = 220;
+    const barW = 140;
+    const barX = leftX + 80;
+    const targetBarH = maxBarH * (6000 / 42000);
+    const animatedBarH = targetBarH * easeOutBack(plotProg, 1.2);
+
+    // Green land plot bar
+    const barGrad = ctx.createLinearGradient(barX, cardY + 360, barX, cardY + 360 - animatedBarH);
+    barGrad.addColorStop(0, '#065f46');
+    barGrad.addColorStop(1, '#10b981');
+    ctx.fillStyle = barGrad;
+    ctx.shadowColor = 'rgba(16, 185, 129, 0.4)';
+    ctx.shadowBlur = 15;
+    ctx.beginPath();
+    ctx.roundRect(barX, cardY + 360 - animatedBarH, barW, animatedBarH, 8);
+    ctx.fill();
+    ctx.shadowBlur = 0;
+
+    // Subtitle label
+    ctx.fillStyle = '#6ee7b7';
+    ctx.font = '700 15px "Inter", sans-serif';
+    ctx.textAlign = 'left';
+    ctx.letterSpacing = '1px';
+    ctx.fillText('PHYSICAL LAND CAPACITY', leftX + 250, cardY + 100);
+
+    ctx.fillStyle = '#ffffff';
+    ctx.font = '700 28px "Noto Naskh Arabic", sans-serif';
+    ctx.fillText('منظور شدہ پلاٹوں کی گنجائش', leftX + 250, cardY + 145);
+
+    // Animated number counter
+    const currentVal = Math.round(6000 * easeOutCubic(plotProg));
+    ctx.fillStyle = '#10b981';
+    ctx.font = '800 68px "Cinzel", "Inter", sans-serif';
+    ctx.fillText(currentVal.toLocaleString(), leftX + 250, cardY + 225);
+
+    ctx.fillStyle = '#94a3b8';
+    ctx.font = '500 15px "Inter", sans-serif';
+    ctx.fillText('Plots Verified by Master Plan', leftX + 250, cardY + 265);
+    ctx.fillText('(approx. 1,200 developed kanals)', leftX + 250, cardY + 295);
+
+    // Verified badge
+    ctx.fillStyle = 'rgba(16, 185, 129, 0.15)';
+    ctx.beginPath();
+    ctx.roundRect(leftX + 250, cardY + 330, 160, 32, 6);
+    ctx.fill();
+    ctx.fillStyle = '#34d399';
+    ctx.font = '600 13px "Inter", sans-serif';
+    ctx.fillText('✓ OFFICIAL LIMIT', leftX + 265, cardY + 351);
+
+    ctx.restore();
+  }
+
+  // ==========================================
+  // SECTION 3: THE 42,000 REPORTED FILES (t: 3.5s - 7.5s)
+  // ==========================================
+  const fileProg = clamp((t - 3.5) / 2.8);
+  const rightX = width * 0.74 - cardW / 2;
+
+  if (fileProg > 0) {
+    ctx.save();
+    const enterAnim = easeOutCubic(clamp((t - 3.5) / 0.8));
+    ctx.globalAlpha = enterAnim;
+
+    // Card background (crimson tension accent)
+    ctx.fillStyle = 'rgba(15, 23, 42, 0.7)';
+    ctx.strokeStyle = 'rgba(239, 68, 68, 0.45)';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.roundRect(rightX, cardY + (1 - enterAnim) * 25, cardW, cardH, 16);
+    ctx.fill();
+    ctx.stroke();
+
+    // Tall Red Stack Bar Graphic (7x taller)
+    const maxBarH = 260;
+    const barW = 140;
+    const barX = rightX + 80;
+    const animatedBarH = maxBarH * easeOutBack(fileProg, 1.3);
+
+    const barGrad = ctx.createLinearGradient(barX, cardY + 360, barX, cardY + 360 - animatedBarH);
+    barGrad.addColorStop(0, '#7f1d1d');
+    barGrad.addColorStop(1, '#ef4444');
+    ctx.fillStyle = barGrad;
+    ctx.shadowColor = 'rgba(239, 68, 68, 0.5)';
+    ctx.shadowBlur = 20;
+    ctx.beginPath();
+    ctx.roundRect(barX, cardY + 360 - animatedBarH, barW, animatedBarH, 8);
+    ctx.fill();
+    ctx.shadowBlur = 0;
+
+    // Crimson warning label
+    ctx.fillStyle = '#fca5a5';
+    ctx.font = '700 15px "Inter", sans-serif';
+    ctx.textAlign = 'left';
+    ctx.letterSpacing = '1px';
+    ctx.fillText('REPORTED ISSUED FILES', rightX + 250, cardY + 100);
+
+    ctx.fillStyle = '#ffffff';
+    ctx.font = '700 28px "Noto Naskh Arabic", sans-serif';
+    ctx.fillText('فروخت شدہ ممبر فائلیں', rightX + 250, cardY + 145);
+
+    // Animated number counter to 42,000
+    const currentVal = Math.round(42000 * easeOutCubic(fileProg));
+    ctx.fillStyle = '#ef4444';
+    ctx.font = '800 68px "Cinzel", "Inter", sans-serif';
+    ctx.fillText(currentVal.toLocaleString(), rightX + 250, cardY + 225);
+
+    ctx.fillStyle = '#94a3b8';
+    ctx.font = '500 15px "Inter", sans-serif';
+    ctx.fillText('Claims in Investigation Inquiries', rightX + 250, cardY + 265);
+    ctx.fillText('Unregistered Paper Certificates', rightX + 250, cardY + 295);
+
+    // Warning Badge
+    ctx.fillStyle = 'rgba(239, 68, 68, 0.15)';
+    ctx.beginPath();
+    ctx.roundRect(rightX + 250, cardY + 330, 200, 32, 6);
+    ctx.fill();
+    ctx.fillStyle = '#f87171';
+    ctx.font = '600 13px "Inter", sans-serif';
+    ctx.fillText('⚠ 700% OVER-ALLOCATION', rightX + 262, cardY + 351);
+
+    ctx.restore();
+  }
+
+  // ==========================================
+  // SECTION 4: RATIO / DISCREPANCY EMBLEM (t: 6.0s - 9.0s)
+  // ==========================================
+  const ratioProg = clamp((t - 6.0) / 1.5);
+  if (ratioProg > 0) {
+    ctx.save();
+    const popAnim = easeOutBack(clamp((t - 6.0) / 0.7), 2.0);
+    const alpha = clamp((t - 6.0) / 0.5);
+    ctx.globalAlpha = alpha;
+
+    const centerX = width / 2;
+    const centerY = cardY + cardH / 2;
+
+    ctx.translate(centerX, centerY);
+    ctx.scale(popAnim, popAnim);
+
+    // Discrepancy pill
+    const pillW = 220;
+    const pillH = 110;
+    ctx.fillStyle = '#0f172a';
+    ctx.strokeStyle = '#d4af37';
+    ctx.lineWidth = 2;
+    ctx.shadowColor = 'rgba(212, 175, 55, 0.4)';
+    ctx.shadowBlur = 25;
+    ctx.beginPath();
+    ctx.roundRect(-pillW / 2, -pillH / 2, pillW, pillH, 20);
+    ctx.fill();
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+
+    // Disparity text
+    ctx.fillStyle = '#d4af37';
+    ctx.font = '800 42px "Cinzel", sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('7 : 1', 0, 5);
+
+    ctx.fillStyle = '#cbd5e1';
+    ctx.font = '700 13px "Inter", sans-serif';
+    ctx.letterSpacing = '1px';
+    ctx.fillText('OVER-ALLOCATION', 0, 32);
+
+    ctx.restore();
+  }
+
+  // ==========================================
+  // SECTION 5: LEGAL DISCLAIMER BAR (t: 0.8s - End)
+  // ==========================================
+  const discProg = clamp((t - 0.8) / 1.0);
+  if (discProg > 0) {
+    ctx.save();
+    ctx.globalAlpha = easeOutCubic(discProg);
+
+    const discY = height - 120;
+    const discH = 68;
+    const discW = width - 240;
+    const discX = 120;
+
+    ctx.fillStyle = 'rgba(15, 23, 42, 0.85)';
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.12)';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.roundRect(discX, discY, discW, discH, 12);
+    ctx.fill();
+    ctx.stroke();
+
+    // Red warning pulse icon
+    ctx.fillStyle = '#ef4444';
+    ctx.font = '700 20px "Inter", sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('!', discX + 35, discY + 41);
+
+    // Urdu legal disclaimer text (Noto Naskh Arabic)
+    ctx.fillStyle = '#e2e8f0';
+    ctx.font = '700 20px "Noto Naskh Arabic", sans-serif';
+    ctx.textAlign = 'right';
+    ctx.fillText('یہ رپورٹ کردہ الزامات اور تحقیقاتی بیانات ہیں، حتمی عدالتی فیصلہ نہیں', discX + discW - 40, discY + 41);
+
+    // English sub-disclaimer
+    ctx.fillStyle = '#94a3b8';
+    ctx.font = '500 13px "Inter", sans-serif';
+    ctx.textAlign = 'left';
+    ctx.fillText('Investigative figures based on public inquiry filings. Presumption of innocence applies until final court adjudication.', discX + 65, discY + 41);
+
+    ctx.restore();
+  }
+
+  ctx.restore();
+}
+
+// Check if running in real-time browser preview or automated frame capture
+if (urlParams.has('frame')) {
+  // Single frame deterministic render
+  const f = parseInt(urlParams.get('frame'));
+  renderFrame(f);
+} else if (urlParams.get('preview') === '1') {
+  // Interactive preview loop in live browser
+  let currentF = 0;
+  function loop() {
+    renderFrame(currentF % totalFrames);
+    currentF++;
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+} else {
+  // Static initial frame draw
+  renderFrame(0);
+}
+
+// Global hook for automated capture engines
+window.renderFrame = renderFrame;
+window.totalFrames = totalFrames;
+window.targetFps = targetFps;
+</script>
+</body>
+</html>

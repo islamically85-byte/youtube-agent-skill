@@ -13,7 +13,8 @@ EXPECTED_CLAUDE_SKILLS = [
     "yt-storyboard", "yt-produce", "yt-localize", "yt-factcheck", "yt-upload-prep", "yt-experiment",
     "yt-studio", "yt-stock-producer", "yt-voice-urdu", "yt-video-editor",
     "yt-motion-graphics", "yt-production-qa", "yt-credit-guard",
-    "yt-hybrid-production", "yt-voice", "yt-assets", "yt-audio", "yt-render", "yt-render-qc"
+    "yt-hybrid-production", "yt-voice", "yt-assets", "yt-audio", "yt-render", "yt-render-qc",
+    "yt-browser-motion", "yt-blender-3d", "yt-sound-design", "yt-timeline-otio"
 ]
 
 EXPECTED_CHATGPT_SKILLS = EXPECTED_CLAUDE_SKILLS
