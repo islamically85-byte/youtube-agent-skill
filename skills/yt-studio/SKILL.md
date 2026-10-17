@@ -1,56 +1,80 @@
 ---
 name: yt-studio
-description: Master orchestration skill for YouTube Agent Studio. Coordinates free-first stock footage documentary production across research, Pakistani Urdu narration, manifest licensing, multi-track FFmpeg editing, and technical QA.
+description: Master orchestration skill for YouTube Agent Studio v3.0. Coordinates the complete 12-step hybrid production pipeline across provider checks, fact-checking, Pakistani Urdu voiceover, licensed stock curation, broadcast audio mastering, FFmpeg video rendering, and strict technical QA.
 ---
 
-# yt-studio — Master Documentary Production Studio
+# yt-studio — Master Hybrid Video Production Studio v3.0
 
-`yt-studio` is the overarching production orchestrator for YouTube Agent Studio. It connects ideation, scriptwriting, voiceover, stock footage sourcing, timeline assembly, and technical QA into a cohesive, zero-credit documentary workflow.
+`yt-studio` is the overarching production orchestrator for YouTube Agent Studio v3.0, maintained by **ABDUL MUEED LASHARY** (building on upstream foundations by Jake Schincariol). It connects ideation, scriptwriting, voiceover, stock footage sourcing, audio mastering, timeline assembly, and technical QA into a cohesive, zero-credit hybrid documentary workflow.
 
-## Studio Pipeline Stages
+## The 12-Step Hybrid Production Pipeline
 
 ```mermaid
 flowchart TD
-    A["Stage 1: Concept & Fact-Checking (yt-script, yt-factcheck)"] --> B["Stage 2: Pakistani Urdu Narration (yt-voice-urdu)"]
-    B --> C["Stage 3: Stock Footage Curation & Licensing (yt-stock-producer)"]
-    C --> D["Stage 4: Multi-Track FFmpeg Assembly (yt-video-editor)"]
-    D --> E["Stage 5: Subtitles & Motion Graphics (yt-motion-graphics)"]
-    E --> F["Stage 6: Technical QA & Human Sign-off (yt-production-qa)"]
-    F --> G["Stage 7: Packaging & Upload Prep (yt-package, yt-upload-prep)"]
+    S1["1. Provider & Budget Check (yt-hybrid-production)"] --> S2["2. Fact-Check & Claims Audit (yt-factcheck)"]
+    S2 --> S3["3. Voiceover & Phonetic Normalization (yt-voice)"]
+    S3 --> S4["4. Editorial Pacing & Shot Planning (yt-assets)"]
+    S4 --> S5["5. Asset Licensing & Manifest Validation (yt-assets)"]
+    S5 --> S6["6. Audio Mastering & Ducking (yt-audio)"]
+    S6 --> S7["7. Motion Graphics & Subtitles (yt-render)"]
+    S7 --> S8["8. Multi-Track Video Rendering (yt-render)"]
+    S8 --> S9["9. Strict Technical QA (yt-render-qc)"]
+    S9 --> S10["10. Human Audiovisual Gate"]
+    S10 --> S11["11. YouTube Optimization & Packaging (yt-package, yt-seo)"]
+    S11 --> S12["12. Publication Gate & Upload Prep (yt-upload-prep)"]
 ```
 
-## Core Production Principles
+## Production Principles
 
-1. **Free-First & Zero-Credit Baseline**:
-   - Production operations default to a **0-credit budget**.
-   - No paid third-party tools (vidIQ, ElevenLabs, DALL-E) are invoked without explicit creator authorization.
+1. **Hybrid Provider Resolution & Zero-Credit Baseline**:
+   - Operations default to a **0-credit budget**.
+   - If connected and authorized APIs have quota, they can be utilized; otherwise, local open-source tools (FFmpeg, Piper Urdu, Python stdlib) execute the complete workflow.
+   - Third-party accounts are never charged without explicit confirmation and cost estimates.
 
-2. **Real Footage Over Synthetic Slides**:
-   - Source authentic, high-definition stock footage from permissive repositories (Pexels, Pixabay, Mixkit, CC0).
-   - Reject robotic slide shows, AI 3D morphing, or low-effort image pans.
+2. **Real Documentary Footage Over Synthetic Slides**:
+   - Curates 70–95 authentic stock cuts per 6–7 minute timeline from permissive repositories (Pexels, Pixabay, Mixkit, CC0).
+   - Rejects static slides, robotic morphs, or fake AI 3D building animations.
 
 3. **Authentic Pakistani Urdu Voiceover**:
-   - Narration is written and rendered in native Perso-Arabic Urdu script (`اردو`), avoiding Roman Urdu.
-   - Speech cadence targets ~130 words per minute for natural documentary weight.
-   - Prioritizes human recording as the gold standard over unverified neural TTS.
+   - Narration is written and vocalized in native Perso-Arabic Urdu script (`اردو`).
+   - Evaluated against a mandatory 20–40s benchmark passage covering numbers (`بیالیس ہزار`, `چھ ہزار`, `چھتیس ہزار`), regulatory bodies (`سی ڈی اے`, `این او سی`, `ایس ای سی پی`, `نیب`), and geographic entities (`اسلام آباد`).
+   - Targets ~130 words per minute for calm, authoritative investigative delivery.
 
-4. **Deterministic Multi-Track Audio**:
-   - Spoken narration normalized to **-14.0 LUFS** via FFmpeg `loudnorm`.
-   - Atmospheric background music ducked to **-24.0 dB** beneath speech.
+4. **Broadcast Audio Standards**:
+   - Voiceover normalized to **-14.0 LUFS** with a **-1.5 dBFS** true peak ceiling.
+   - Background music ducked automatically to **-24.0 dB** beneath speech.
+   - Missing music produces an explicit `MISSING_MUSIC_WARNING` to prevent unintended silent ambience.
 
-5. **Defensive Manifest & Provenance Tracking**:
-   - Every asset is registered in `project-manifest.json` with source URL, license class, and verification date.
-   - Run `validate_manifest.py` before touching the render pipeline.
+5. **Reported Allegations vs Legal Convictions**:
+   - All investigative figures (such as 42,000 files vs 6,000 plots, Rs 16B inquiry, 7 arrests) are strictly identified as **REPORTED ALLEGATIONS** (`رپورٹ کردہ الزامات`).
+   - Subtitles and disclaimers clearly state that arrest does not constitute conviction and that stock media is illustrative.
 
-6. **Rigorous Quality Gate (`TECHNICALLY_VALID_PENDING_REVIEW`)**:
-   - Rendered media is probed via `qa_media.py` for duration, black frames, resolution, and audio loudness.
-   - Automated tools report technical compliance but **never** bypass human editorial sign-off.
+6. **Strict Duration & Technical QA Gate (`TECHNICALLY_VALID_PENDING_REVIEW`)**:
+   - Renders are strictly verified against target duration bounds (360.0s – 420.0s for 6–7 minute documentaries); short videos fail QA immediately.
+   - Black frame detection, EBU R128 loudness analysis, and license compliance must pass before human sign-off.
+   - Automated checks never bypass mandatory human audiovisual review.
 
-## Execution Walkthrough
+## Pipeline Command Walkthrough
 
-When orchestrating a documentary video:
-1. **Script & Fact-Checking**: Draft the narrative script, establishing hook, tension, and clinical/empirical grounding.
-2. **Audio Track**: Record or load the voiceover track; verify timing and pronunciation.
-3. **Footage Curation**: Map each script sentence to a visually compelling stock clip (minimum 2–5 seconds per cut).
-4. **Assembly & Render**: Generate the manifest and execute `render_free.py` to produce a playable 1080p MP4.
-5. **Technical QA**: Probe the output with `qa_media.py`, verify `TECHNICALLY_VALID_PENDING_REVIEW`, and review the 5 mandatory human checkpoints.
+```bash
+# 1. Resolve hybrid providers & verify credit budget
+python3 shared/scripts/provider_engine.py --status
+
+# 2. Analyze screenplay word count & normalize numbers/acronyms
+python3 shared/scripts/urdu_voice_engine.py --script templates/documentaries/pakistan_property_screenplay.txt --normalize
+
+# 3. Generate 70-95 shot EDL from licensed asset manifest
+python3 shared/scripts/stock_director.py --manifest Stock_Footage_Manifest_22.csv --duration 390.0 --out edit_decisions.json
+
+# 4. Mix voiceover and background music (-14 LUFS, -24 dB ducking)
+python3 shared/scripts/audio_manager.py --voice voiceover.wav --music background_music.mp3 --duration 390.0 --out master_audio.m4a --meta audio_mix.json
+
+# 5. Generate cue-synchronized ASS motion subtitles with allegations disclaimers
+python3 shared/scripts/editorial_motion.py --cues voice_cue_times.json --output documentary_motion.ass
+
+# 6. Render master 1080p MP4 documentary
+python3 shared/scripts/render_free.py --manifest project-manifest.json --audio master_audio.m4a --subtitles documentary_motion.ass --output exports/master_documentary.mp4
+
+# 7. Execute strict technical QA (enforcing 360-420s bounds)
+python3 shared/scripts/qa_media.py --media exports/master_documentary.mp4 --manifest project-manifest.json --min-duration 360.0 --max-duration 420.0 --require-music
+```

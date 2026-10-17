@@ -153,7 +153,10 @@ MANDATORY_HUMAN_REVIEW_ITEMS = [
 def run_qa(
     media_path: str,
     manifest_path: Optional[str] = None,
-    target_lufs: float = -14.0
+    target_lufs: float = -14.0,
+    min_duration: Optional[float] = None,
+    max_duration: Optional[float] = None,
+    require_music: bool = False
 ) -> Dict[str, Any]:
     """Run full technical QA analysis on media file."""
     media_abs = os.path.abspath(media_path)
@@ -172,18 +175,20 @@ def run_qa(
             "automated_checks": {
                 "black_frames": {"passed": False, "drop_count": 0, "intervals": []},
                 "audio_loudness": {"passed": False, "integrated_lufs": -99.0, "target_lufs": target_lufs, "true_peak_db": -99.0},
-                "license_compliance": {"passed": False, "unverified_assets_count": 1}
+                "license_compliance": {"passed": False, "unverified_assets_count": 1},
+                "duration_bounds": {"passed": False, "duration_sec": 0.0, "min_sec": min_duration, "max_sec": max_duration}
             },
             "mandatory_human_review_items": MANDATORY_HUMAN_REVIEW_ITEMS,
             "verdict_summary": f"Media file not found: {media_abs}"
         }
 
     project_id = "standalone_media"
+    manifest_data: Dict[str, Any] = {}
     if manifest_path and os.path.exists(manifest_path):
         try:
             with open(manifest_path, "r", encoding="utf-8") as f:
-                m_data = json.load(f)
-                project_id = m_data.get("project_id", project_id)
+                manifest_data = json.load(f)
+                project_id = manifest_data.get("project_id", project_id)
         except Exception:
             pass
 
@@ -203,7 +208,8 @@ def run_qa(
             "automated_checks": {
                 "black_frames": {"passed": False, "drop_count": 0, "intervals": []},
                 "audio_loudness": {"passed": False, "integrated_lufs": -99.0, "target_lufs": target_lufs, "true_peak_db": -99.0},
-                "license_compliance": {"passed": False, "unverified_assets_count": 0}
+                "license_compliance": {"passed": False, "unverified_assets_count": 0},
+                "duration_bounds": {"passed": False, "duration_sec": 0.0, "min_sec": min_duration, "max_sec": max_duration}
             },
             "mandatory_human_review_items": MANDATORY_HUMAN_REVIEW_ITEMS,
             "verdict_summary": "ffprobe executable not found in PATH. Install ffmpeg/ffprobe to probe media."
@@ -255,6 +261,30 @@ def run_qa(
     loudness_passed, int_lufs, true_peak = measure_ebur128_loudness(media_abs)
     lic_passed, unverified_lic_count = check_licensing(manifest_path)
 
+    # Duration bounds check
+    dur_bounds_passed = True
+    dur_failures: List[str] = []
+    if min_duration is not None and dur < min_duration:
+        dur_bounds_passed = False
+        dur_failures.append(f"duration {dur:.1f}s is below minimum requirement of {min_duration:.1f}s")
+    if max_duration is not None and dur > max_duration:
+        dur_bounds_passed = False
+        dur_failures.append(f"duration {dur:.1f}s exceeds maximum requirement of {max_duration:.1f}s")
+
+    # Music track check
+    music_passed = True
+    music_warning: Optional[str] = None
+    if manifest_data:
+        raw_manifest_str = json.dumps(manifest_data)
+        if "MISSING_MUSIC_WARNING" in raw_manifest_str:
+            music_warning = "MISSING_MUSIC_WARNING present in manifest"
+            if require_music:
+                music_passed = False
+        elif manifest_data.get("music_present") is False or (require_music and not manifest_data.get("music_track")):
+            music_warning = "Background music track is missing from project manifest"
+            if require_music:
+                music_passed = False
+
     automated_checks = {
         "black_frames": {
             "passed": bf_passed,
@@ -270,8 +300,21 @@ def run_qa(
         "license_compliance": {
             "passed": lic_passed,
             "unverified_assets_count": unverified_lic_count
+        },
+        "duration_bounds": {
+            "passed": dur_bounds_passed,
+            "duration_sec": round(dur, 2),
+            "min_sec": min_duration,
+            "max_sec": max_duration
         }
     }
+
+    if require_music or music_warning:
+        automated_checks["music_track"] = {
+            "passed": music_passed,
+            "required": require_music,
+            "warning": music_warning
+        }
 
     # Determine status
     critical_pass = (
@@ -282,7 +325,9 @@ def run_qa(
         a_codec != "none" and
         bf_passed and
         loudness_passed and
-        lic_passed
+        lic_passed and
+        dur_bounds_passed and
+        music_passed
     )
 
     if critical_pass:
@@ -302,6 +347,9 @@ def run_qa(
             failures.append(f"integrated loudness {int_lufs:.1f} LUFS out of acceptable range")
         if not lic_passed:
             failures.append(f"{unverified_lic_count} unverified licenses")
+        failures.extend(dur_failures)
+        if not music_passed:
+            failures.append(music_warning or "background music check failed")
         summary = f"Critical technical checks failed: {', '.join(failures)}."
 
     report = {
@@ -322,10 +370,19 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="Automated Technical QA Prober for YouTube Media.")
     parser.add_argument("--media", "-m", required=True, help="Path to rendered MP4/MOV video file.")
     parser.add_argument("--manifest", help="Optional project manifest JSON to check license compliance.")
+    parser.add_argument("--min-duration", type=float, default=None, help="Minimum acceptable duration in seconds.")
+    parser.add_argument("--max-duration", type=float, default=None, help="Maximum acceptable duration in seconds.")
+    parser.add_argument("--require-music", action="store_true", help="Require background music track without warnings.")
     parser.add_argument("--json", action="store_true", help="Output full report in JSON format.")
     args = parser.parse_args()
 
-    report = run_qa(args.media, manifest_path=args.manifest)
+    report = run_qa(
+        args.media,
+        manifest_path=args.manifest,
+        min_duration=args.min_duration,
+        max_duration=args.max_duration,
+        require_music=args.require_music
+    )
 
     if args.json:
         print(json.dumps(report, indent=2))
@@ -349,6 +406,12 @@ def main() -> int:
         print(f"   - Audio Loudness: {'PASSED' if loud['passed'] else 'FAILED'} ({loud['integrated_lufs']} LUFS, True Peak: {loud['true_peak_db']} dBFS)")
         lic = checks["license_compliance"]
         print(f"   - Licensing: {'PASSED' if lic['passed'] else 'FAILED'} (unverified: {lic['unverified_assets_count']})")
+        db = checks.get("duration_bounds", {})
+        if db.get("min_sec") is not None or db.get("max_sec") is not None:
+            print(f"   - Duration Bounds: {'PASSED' if db['passed'] else 'FAILED'} ({db.get('min_sec')}s - {db.get('max_sec')}s)")
+        if "music_track" in checks:
+            mt = checks["music_track"]
+            print(f"   - Music Track: {'PASSED' if mt['passed'] else 'FAILED'} (warning: {mt.get('warning')})")
 
         print(f"\n📋 Mandatory Human Review Checklist:")
         for item in report["mandatory_human_review_items"]:

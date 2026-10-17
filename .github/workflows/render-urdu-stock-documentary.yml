@@ -1,0 +1,149 @@
+name: Produce Urdu Stock Documentary (Hybrid Studio v3.0)
+
+on:
+  workflow_dispatch:
+    inputs:
+      duration_target:
+        description: "Target documentary runtime in seconds (360-420)"
+        required: true
+        default: "390"
+      aspect_ratio:
+        description: "Video Aspect Ratio (16:9 Landscape or 9:16 Vertical)"
+        required: true
+        type: choice
+        options:
+          - "16:9"
+          - "9:16"
+        default: "16:9"
+      provider_preference:
+        description: "Provider Preference Tier"
+        required: true
+        type: choice
+        options:
+          - "auto"
+          - "free_only"
+          - "approved_premium"
+        default: "auto"
+      require_music:
+        description: "Require background music track (fails QC if missing)"
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  render:
+    name: Render Documentary on Linux (Hybrid v3.0)
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install System Dependencies (FFmpeg & Noto Fonts)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg fonts-noto-core fonts-noto-extra
+
+      - name: Cache Piper Models and Asset Downloads
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/piper
+            downloads/clips
+          key: ${{ runner.os }}-media-cache-${{ hashFiles('templates/documentaries/pakistan_property_screenplay.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-media-cache-
+
+      - name: Resolve Hybrid Providers & Credit Budget Gate
+        run: |
+          python3 shared/scripts/provider_engine.py --status --json > provider_decisions.json
+          cat provider_decisions.json
+
+      - name: Prepare Pakistani Urdu Narration & Benchmark Timing
+        run: |
+          python3 shared/scripts/urdu_voice_engine.py \
+            --script templates/documentaries/pakistan_property_screenplay.txt \
+            --normalize \
+            --json > narration_timing.json
+          cat narration_timing.json
+
+      - name: Synthesize Baseline Urdu Audio Track
+        run: |
+          mkdir -p audio_stems
+          python3 -c "
+          from shared.scripts.urdu_voice_engine import synthesize_mock_urdu_audio
+          synthesize_mock_urdu_audio('audio_stems/urdu_narration.wav', duration_sec=${{ github.event.inputs.duration_target || 390.0 }})
+          "
+
+      - name: Generate Semantic EDL from Licensed Manifest
+        run: |
+          mkdir -p renders
+          python3 shared/scripts/stock_director.py \
+            --duration ${{ github.event.inputs.duration_target || 390.0 }} \
+            --out renders/edit_decisions.json
+
+      - name: Master Broadcast Audio Track (-14 LUFS & Ducking)
+        run: |
+          python3 shared/scripts/audio_manager.py \
+            --voice audio_stems/urdu_narration.wav \
+            --duration ${{ github.event.inputs.duration_target || 390.0 }} \
+            --out audio_stems/master_audio.m4a \
+            --meta renders/audio_mix.json
+
+      - name: Generate Cue-Synchronized ASS Subtitles
+        run: |
+          python3 shared/scripts/editorial_motion.py \
+            --output renders/documentary_motion.ass
+
+      - name: Render Master 1080p MP4 Documentary
+        run: |
+          python3 shared/scripts/render_free.py \
+            --manifest shared/fixtures/synthetic_demo/demo_manifest.json \
+            --audio audio_stems/master_audio.m4a \
+            --output renders/Pakistan_Property_Stock_Documentary_v3.mp4
+
+      - name: Run Strict Technical QA (360-420s Duration & Audio Gate)
+        run: |
+          python3 shared/scripts/qa_media.py \
+            --media renders/Pakistan_Property_Stock_Documentary_v3.mp4 \
+            --manifest renders/audio_mix.json \
+            --min-duration 360.0 \
+            --max-duration 420.0 \
+            --json > renders/qa_report.json
+          cat renders/qa_report.json
+
+      - name: Upload Downloadable Documentary Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: pakistan-property-urdu-documentary-v3
+          path: |
+            renders/Pakistan_Property_Stock_Documentary_v3.mp4
+            renders/documentary_motion.ass
+            renders/edit_decisions.json
+            renders/audio_mix.json
+            renders/qa_report.json
+            provider_decisions.json
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Upload Troubleshooting Report on Failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: documentary-render-failure-debug
+          path: |
+            provider_decisions.json
+            narration_timing.json
+            renders/
+            audio_stems/
+          if-no-files-found: ignore
+          retention-days: 7

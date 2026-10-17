@@ -1,27 +1,27 @@
-# YouTube Agent Studio v2.0 — Free-First Documentary Production Edition
+# YouTube Agent Studio v3.0 — Hybrid Video Production Edition
 
-> **A professional, open-source production toolkit for YouTube creators — engineered natively for both Anthropic Claude and OpenAI ChatGPT.**
+> **A professional, production-capable hybrid creator studio for YouTube — engineered natively for both Anthropic Claude and OpenAI ChatGPT.**  
 > **Extension Maintainer:** ABDUL MUEED LASHARY | **Upstream Author:** Jake Schincariol
 
 [![Test & Build](https://github.com/islamically85-byte/youtube-agent-skill/actions/workflows/test.yml/badge.svg)](https://github.com/islamically85-byte/youtube-agent-skill/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-brightgreen.svg)](#python-utilities)
 [![Platform: Claude & ChatGPT](https://img.shields.io/badge/Platform-Claude%20%7C%20ChatGPT-purple.svg)](#platform-editions)
-[![FFmpeg Verified](https://img.shields.io/badge/FFmpeg-Multi--Track%20Assembly-red.svg)](#multi-track-video-assembly)
+[![FFmpeg Verified](https://img.shields.io/badge/FFmpeg-Broadcast%20Rendering-red.svg)](#multi-track-video-assembly)
 
 ---
 
-## What is YouTube Agent Studio?
+## What is YouTube Agent Studio v3.0?
 
-YouTube Agent Studio transforms AI into a rigorous pair-programmer and production lead for YouTube creators. Rather than generating generic summaries or formulaic fluff, it provides **24 specialized production workflows** backed by **11 zero-dependency Python utilities** and a deterministic **FFmpeg multi-track video assembly engine**.
+YouTube Agent Studio v3.0 upgrades our production toolkit into a **production-capable hybrid creator studio**. It leverages premium third-party APIs (ElevenLabs, Azure, Runway, vidIQ) when connected, authorized, and credited — while guaranteeing a completely supported, zero-budget fallback to local open-source tools (FFmpeg, Piper Urdu, Python stdlib) with no loss in documentary rigor.
 
 ### Core Guarantees:
-- **100% Free & Offline-First (Default Budget = 0 Credits)**: Core functionality requires no paid APIs, no subscriptions, no YouTube account logins, and no API keys.
-- **Third-Party Quota Guarding**: Protects depleting third-party quotas (such as vidIQ) from accidental drain and blocks metered charges without explicit user authorization.
-- **Documentary-Grade Real Footage**: Replaces AI slide shows and synthetic 3D gimmicks with authentic, permissively licensed stock video (Pexels, Pixabay, Mixkit, CC0).
-- **Authentic Pakistani Urdu Narration**: Spoken scripts and subtitles authored strictly in native Perso-Arabic Urdu script (`اردو`) at ~130 WPM documentary pacing.
-- **Objective Quality Gate (`TECHNICALLY_VALID_PENDING_REVIEW`)**: Probes media for black frames, loudness compliance (-14 LUFS), and licensing provenance without ever replacing mandatory human review.
-- **Never Fabricates Metrics**: Does not invent analytics, competitor statistics, scientific citations, or publication outcomes.
+- **Hybrid Provider Resolution (Default Budget = 0 Credits)**: Core functionality never charges any paid account without prior explicit user confirmation and cost estimation.
+- **Strict Quality Control & Duration Bounds**: Enforces exact documentary runtime constraints (360.0s – 420.0s for 6–7 minute documentaries); short narration tracks are rejected by QA rather than exported with warnings.
+- **Documentary-Grade Real Stock Footage**: Generates 70–95 semantic cuts per 6.5-minute timeline from verified permissive stock (Pexels, Pixabay, Mixkit, CC0) without slide-show gimmicks or fake AI morphs.
+- **Authentic Pakistani Urdu Narration**: Screenplays and subtitles written in native Perso-Arabic Urdu script (`اردو`), benchmarked against an empirical 20–40s test passage covering key numerals and regulatory bodies (`سی ڈی اے`, `این او سی`, `ایس ای سی پی`, `نیب`).
+- **Broadcast Audio Standards**: Voiceover mastered to **-14.0 LUFS** with automatic **-24.0 dB** background score ducking and explicit `MISSING_MUSIC_WARNING` detection.
+- **Reported Allegations Compliance**: All investigative figures (such as 42,000 files vs 6,000 plots, Rs 16B inquiry, 7 arrests) are strictly badged as **REPORTED ALLEGATIONS** (`رپورٹ کردہ الزامات`) with explicit presumption-of-innocence disclaimers.
 
 ---
 
@@ -32,93 +32,90 @@ YouTube Agent Studio provides two dedicated, independently maintainable distribu
 | Feature | Claude Edition (`skills/`) | ChatGPT Edition (`chatgpt/`) |
 |---|---|---|
 | **Invocation** | Slash commands (`/yt-studio`, `/yt-script`, etc.) | Natural conversation & Master Orchestrator (`yt-studio`) |
-| **Skill Count** | **24 Dedicated Skills** | **24 Dedicated Skills** |
+| **Skill Count** | **30 Dedicated Skills** | **30 Dedicated Skills** |
 | **Python Execution** | Local shell execution in Claude Code | Code Interpreter / local Python execution |
 | **Package Asset** | `release/youtube-agent-claude.zip` | `release/youtube-agent-chatgpt-skill.zip`<br>`release/youtube-agent-chatgpt-plugin.zip` |
 | **Installation Guide** | [docs/INSTALL-CLAUDE.md](docs/INSTALL-CLAUDE.md) | [docs/INSTALL-CHATGPT.md](docs/INSTALL-CHATGPT.md) |
 
 ---
 
-## The 24-Workflow Studio Catalog
+## The 30-Workflow Studio Catalog
 
-### 1. Studio Orchestration
-- **`yt-studio`**: Master documentary conductor coordinating concept &rarr; research &rarr; script &rarr; Urdu narration &rarr; stock curation &rarr; FFmpeg assembly &rarr; QA &rarr; packaging.
+### 1. Hybrid Studio & Production Engines (New in v3.0)
+- **`yt-studio`**: Master 12-step hybrid documentary conductor coordinating provider resolution, fact-checking, narration, stock editing, audio mastering, rendering, and QA.
+- **`yt-hybrid-production`**: Hybrid provider resolver & credit budget guard (`provider_engine.py`).
+- **`yt-voice`**: Pakistani Urdu TTS selector, 20-40s pronunciation benchmark, and number/acronym normalizer (`urdu_voice_engine.py`).
+- **`yt-assets`**: Semantic story-to-shot director generating 70-95 cuts from verified manifests (`stock_director.py`).
+- **`yt-audio`**: Broadcast audio mastering engine (-14 LUFS, -24 dB ducking, YouTube chapters) (`audio_manager.py`).
+- **`yt-render`**: High-definition video assembler with Ken Burns motion and cue-synchronized ASS subtitles (`render_free.py`, `editorial_motion.py`).
+- **`yt-render-qc`**: Strict technical QA prober enforcing 360-420s duration bounds and EBU R128 compliance (`qa_media.py`).
 
-### 2. Free Stock Footage & Documentary Production (New in v2.0)
-- **`yt-stock-producer`**: Curates and registers permissive stock footage (Pexels, Pixabay, Mixkit, CC0) into a deterministic `project-manifest.json` with commercial licensing verification.
-- **`yt-voice-urdu`**: Guides authentic Pakistani Urdu voiceover production in native script (`اردو`), ~130 WPM speech cadence, and broadcast audio mastering.
-- **`yt-video-editor`**: Documentary timeline assembly via `render_free.py` (clip trimming, canvas scaling to 1080p, -24 dB audio ducking).
-- **`yt-motion-graphics`**: Typographic design for Urdu RTL subtitles, clean lower-thirds, and 10% mobile safe-zone enforcement.
-- **`yt-production-qa`**: Automated `ffprobe`/`ffmpeg` technical media prober via `qa_media.py`, awarding `TECHNICALLY_VALID_PENDING_REVIEW`.
-- **`yt-credit-guard`**: Budget controller via `credit_guard.py` blocking unapproved third-party API deductions (e.g. vidIQ, ElevenLabs).
+### 2. Free Stock Footage & Documentary Workflows
+- **`yt-stock-producer`**: Manifest licensing validation (`validate_manifest.py`).
+- **`yt-voice-urdu`**: Native Pakistani Urdu voiceover production in Nastaliq script.
+- **`yt-video-editor`**: Multi-track timeline assembly.
+- **`yt-motion-graphics`**: Subtitle styling and mobile safe margins.
+- **`yt-production-qa`**: Deterministic ffprobe quality check and human sign-off gate.
+- **`yt-credit-guard`**: Third-party API protection and zero-credit enforcement (`credit_guard.py`).
 
 ### 3. Core Channel & Editorial Workflows (11)
-- **`yt-script`**: Scriptwriting engine across long-form, Shorts, and documentaries with 21 scored hook formulas.
-- **`yt-package`**: Lints title and thumbnail as a single click surface with mobile (40 char) truncation checks.
-- **`yt-edit`**: Generates Edit Decision Lists (EDL) from SRT, VTT, or Whisper JSON transcripts (dead air & filler cuts).
-- **`yt-comment`**: 5-tier comment triage and authentic creator voice replies.
-- **`yt-plan`**: Capacity-calibrated content calendars distinguishing anchor tentpole videos from low-friction Shorts.
-- **`yt-viral`**: Ethical competitor intelligence ranking uploads by multiple over each channel's median views.
-- **`yt-retention`**: Diagnoses hook leaks (first 30s), steep drop cliff moments, and pacing slides from CSV exports.
-- **`yt-shorts`**: Extracts standalone 9:16 vertical clips from long transcripts with rewritten spoken hooks.
-- **`yt-seo`**: Search-intent descriptions, above-the-fold value summaries, verified timestamps, and secondary tags.
-- **`yt-chapters`**: Validates YouTube platform chapter constraints (starts at 00:00, >= 3 chapters, min 10s per chapter).
-- **`yt-audit`**: 5-pillar holistic channel diagnostic delivering exactly **ONE highest-impact fix**.
+- **`yt-script`**: Scriptwriting engine with 21 scored hook formulas (`hookscore.py`).
+- **`yt-package`**: Title and thumbnail packaging linter (`title.py`).
+- **`yt-edit`**: Edit decision lists from transcripts (`deadair.py`, `transcript.py`).
+- **`yt-comment`**: 5-tier comment triage and authentic community engagement.
+- **`yt-plan`**: Workload-calibrated content calendars.
+- **`yt-viral`**: Competitor outlier ranking over median views (`swipe.py`).
+- **`yt-retention`**: Audience retention diagnostic curves (`retention.py`).
+- **`yt-shorts`**: 9:16 vertical extraction with rewritten hooks.
+- **`yt-seo`**: Search-intent descriptions, value summaries, and tags.
+- **`yt-chapters`**: YouTube 4-rule platform chapter validator (`chapters.py`).
+- **`yt-audit`**: 5-pillar holistic channel diagnostic.
 
 ### 4. Advanced Studio Systems (6)
-- **`yt-storyboard`**: Converts scripts into shot-by-shot visual storyboards with camera angles and continuity bibles.
-- **`yt-produce`**: Capability-aware AI video prompt generation for realistic live-action and explainers.
-- **`yt-localize`**: Multilingual adaptation with native Pakistani Urdu script and culturally fluent phrasing.
-- **`yt-factcheck`**: Rigorous claim verification classifying evidence into `[VERIFIED]`, `[DISPUTED]`, `[UNSUPPORTED]`, or `[REQUIRES CITATION]`.
-- **`yt-upload-prep`**: Complete publication dossier with COPPA classification, synthetic disclosures, and audio checks.
-- **`yt-experiment`**: Controlled A/B hypothesis design calibrated for YouTube Studio's "Test & Compare" tool.
+- **`yt-storyboard`**: Scene blocking, camera moves, and continuity bibles.
+- **`yt-produce`**: Capability-aware AI video prompts.
+- **`yt-localize`**: Multilingual adaptation for Pakistani Urdu audiences.
+- **`yt-factcheck`**: Rigorous claim verification classifying evidence into `[VERIFIED]`, `[DISPUTED]`, `[UNSUPPORTED]`.
+- **`yt-upload-prep`**: Pre-flight publication dossiers.
+- **`yt-experiment`**: Controlled A/B testing scopes for YouTube Studio "Test & Compare".
 
 ---
 
 ## Python Utilities Suite
 
-All tools run on standard Python 3.10+ without required external dependencies:
+All 16 tools run on standard Python 3.10+ without mandatory paid dependencies:
 
 ```bash
-# 1. Validate project manifest & licensing provenance
-python3 shared/scripts/validate_manifest.py --manifest project-manifest.json --strict
+# 1. Inspect hybrid provider status & credit budget ledger
+python3 shared/scripts/provider_engine.py --status --json
 
-# 2. Check third-party credit budget & protect live balances
-python3 shared/scripts/credit_guard.py --tool vidiq --action competitor_research
+# 2. Evaluate Pakistani Urdu pronunciation benchmark (20-40s standard passage)
+python3 shared/scripts/urdu_voice_engine.py --test-passage
 
-# 3. Render multi-track documentary video with ducked music & subtitles
-python3 shared/scripts/render_free.py --manifest project-manifest.json --output master.mp4
+# 3. Analyze & normalize 6-7 minute Urdu documentary screenplay
+python3 shared/scripts/urdu_voice_engine.py --script templates/documentaries/pakistan_property_screenplay.txt --normalize
 
-# 4. Probe rendered media for technical QA compliance
-python3 shared/scripts/qa_media.py --media master.mp4 --manifest project-manifest.json
+# 4. Generate 70-95 shot EDL from licensed stock manifest
+python3 shared/scripts/stock_director.py --manifest Stock_Footage_Manifest_22.csv --duration 390.0 --out edit_decisions.json
 
-# 5. Universal transcript parser (SRT, VTT, Whisper JSON)
-python3 shared/scripts/transcript.py transcript.srt --language ur
+# 5. Master broadcast audio (-14 LUFS voice, -24 dB ducked music, YouTube chapters)
+python3 shared/scripts/audio_manager.py --voice voice.wav --music score.mp3 --duration 390.0 --out master_audio.m4a --meta audio_mix.json
 
-# 6. Score hook against 21 creator formulas
-python3 shared/scripts/hookscore.py --hook "97% of creators quit before video 30"
+# 6. Generate cue-synchronized ASS motion subtitles with allegations disclaimers
+python3 shared/scripts/editorial_motion.py --output documentary_motion.ass
 
-# 7. Lint title & thumbnail pairing
-python3 shared/scripts/title.py --title "Why 97% of Creators Quit" --thumb "STOP QUITTING"
+# 7. Render master 1080p MP4 documentary
+python3 shared/scripts/render_free.py --manifest project-manifest.json --audio master_audio.m4a --subtitles documentary_motion.ass --output exports/master.mp4
 
-# 8. Generate Edit Decision List (EDL) from pauses
-python3 shared/scripts/deadair.py transcript.srt --floor 0.35 --json
-
-# 9. Validate YouTube platform chapters
-python3 shared/scripts/chapters.py transcript.srt --target 8
-
-# 10. Diagnose audience retention leaks
-python3 shared/scripts/retention.py retention.csv --transcript transcript.srt
-
-# 11. Rank competitor outliers against channel median
-python3 shared/scripts/swipe.py competitor_videos.json --min 2.0
+# 8. Strict technical QA probing (rejecting durations < 360s)
+python3 shared/scripts/qa_media.py --media exports/master.mp4 --manifest audio_mix.json --min-duration 360.0 --max-duration 420.0 --require-music
 ```
 
 ---
 
 ## Automated Quality Assurance
 
-YouTube Agent Studio includes an automated test suite containing **72 unit, integration, and behavioral tests**:
+YouTube Agent Studio includes an automated test suite containing **95 unit, integration, and behavioral tests**:
 
 ```bash
 # Run the complete test suite
