@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "MediaQAReport",
+  "description": "Automated technical QA report schema for rendered YouTube documentary media.",
+  "type": "object",
+  "properties": {
+    "project_id": { "type": "string" },
+    "media_path": { "type": "string" },
+    "qa_timestamp": { "type": "string" },
+    "status": {
+      "type": "string",
+      "enum": [
+        "TECHNICALLY_VALID_PENDING_REVIEW",
+        "FAILED_CRITICAL_CHECKS",
+        "REVIEW_REQUIRED"
+      ]
+    },
+    "probed_metrics": {
+      "type": "object",
+      "properties": {
+        "duration_sec": { "type": "number" },
+        "resolution": { "type": "string" },
+        "aspect_ratio": { "type": "string" },
+        "framerate_fps": { "type": "number" },
+        "video_codec": { "type": "string" },
+        "audio_codec": { "type": "string" },
+        "audio_channels": { "type": "integer" },
+        "sample_rate_hz": { "type": "integer" }
+      },
+      "required": ["duration_sec", "resolution", "video_codec", "audio_codec"]
+    },
+    "automated_checks": {
+      "type": "object",
+      "properties": {
+        "black_frames": {
+          "type": "object",
+          "properties": {
+            "passed": { "type": "boolean" },
+            "drop_count": { "type": "integer" },
+            "intervals": { "type": "array", "items": { "type": "string" } }
+          },
+          "required": ["passed"]
+        },
+        "audio_loudness": {
+          "type": "object",
+          "properties": {
+            "passed": { "type": "boolean" },
+            "integrated_lufs": { "type": "number" },
+            "target_lufs": { "type": "number", "default": -14.0 },
+            "true_peak_db": { "type": "number" }
+          },
+          "required": ["passed"]
+        },
+        "license_compliance": {
+          "type": "object",
+          "properties": {
+            "passed": { "type": "boolean" },
+            "unverified_assets_count": { "type": "integer" }
+          },
+          "required": ["passed"]
+        }
+      },
+      "required": ["black_frames", "audio_loudness", "license_compliance"]
+    },
+    "mandatory_human_review_items": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "verdict_summary": { "type": "string" }
+  },
+  "required": ["project_id", "media_path", "status", "probed_metrics", "automated_checks", "mandatory_human_review_items"]
+}

@@ -4,6 +4,33 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.0] - 2026-10-17
+
+### Added
+- **Free-First Stock Footage Documentary Production**:
+  - Expanded toolkit from script/SEO ideation into real, playable video production using permissive stock footage (Pexels, Pixabay, Mixkit, CC0).
+  - Added seven new production skills across both Claude and ChatGPT:
+    * `yt-studio`: Master documentary production orchestrator.
+    * `yt-stock-producer`: Permissive stock video curation and licensing provenance tracking.
+    * `yt-voice-urdu`: Fluent Pakistani Urdu voiceover guidance, 130 WPM cadence, and audio mastering.
+    * `yt-video-editor`: Timeline planning and multi-track assembly via FFmpeg.
+    * `yt-motion-graphics`: RTL Urdu typography, safe margins, and subtitles.
+    * `yt-production-qa`: Automated technical QA probing via `qa_media.py`.
+    * `yt-credit-guard`: Third-party quota protection and zero-credit budget enforcement.
+- **Four Production Python Tools**:
+  - `shared/scripts/validate_manifest.py`: Validates `project-manifest.json` against licensing classes and timeline rules.
+  - `shared/scripts/credit_guard.py`: Enforces zero-credit baseline and prevents accidental depletion of third-party balances (e.g. vidIQ).
+  - `shared/scripts/render_free.py`: Multi-track FFmpeg engine combining stock clips, -14.0 LUFS dialogue, -24.0 dB ducked music, and cross-platform path escaping.
+  - `shared/scripts/qa_media.py`: Technical prober evaluating black frames, EBU R128 loudness, and emitting `TECHNICALLY_VALID_PENDING_REVIEW`.
+- **JSON Schemas**:
+  - `shared/schemas/project-manifest.schema.json`
+  - `shared/schemas/qa-report.schema.json`
+- **Research Note**: Added `docs/RESEARCH-NOTE-FREE-PRODUCTION.md` analyzing stock licensing classes, vidIQ credit depletion, Pakistani Urdu TTS landscape, and zero-credit production routes.
+- **Test Suite Expansion**: Added 16 new unit tests, bringing the automated test suite to 72 passing tests.
+
+### Maintained By
+- Extended, architected, and maintained by **ABDUL MUEED LASHARY**. Upstream MIT copyright and attribution strictly preserved for original author Jake Schincariol.
+
 ---
 
 ## [2.0.0] - 2026-10-16

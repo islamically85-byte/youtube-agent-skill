@@ -1,0 +1,54 @@
+{
+  "project_id": "synthetic_smoke_test_001",
+  "title": "Synthetic Stock Footage Documentary Smoke Test",
+  "target_duration_sec": 4.0,
+  "aspect_ratio": "16:9",
+  "credit_budget": 0,
+  "footage_clips": [
+    {
+      "id": "clip_1",
+      "source_type": "procedural_test",
+      "source_url_or_path": "/Users/office/.gemini/antigravity/scratch/youtube-agent-skill/shared/fixtures/synthetic_demo/clip_1_stock.mp4",
+      "license_class": "MIT Procedural Test",
+      "license_verified_date": "2026-10-16",
+      "clip_duration_sec": 2.0,
+      "timeline_in_sec": 0.0,
+      "timeline_out_sec": 2.0
+    },
+    {
+      "id": "clip_2",
+      "source_type": "procedural_test",
+      "source_url_or_path": "/Users/office/.gemini/antigravity/scratch/youtube-agent-skill/shared/fixtures/synthetic_demo/clip_2_stock.mp4",
+      "license_class": "MIT Procedural Test",
+      "license_verified_date": "2026-10-16",
+      "clip_duration_sec": 2.0,
+      "timeline_in_sec": 2.0,
+      "timeline_out_sec": 4.0
+    }
+  ],
+  "audio": {
+    "narration": {
+      "file_path": "/Users/office/.gemini/antigravity/scratch/youtube-agent-skill/shared/fixtures/synthetic_demo/narration_ur.wav",
+      "language": "ur",
+      "script_format": "urdu_nastaliq",
+      "target_lufs": -14.0,
+      "voice_provenance": "procedural_test"
+    },
+    "background_music": {
+      "file_path": "/Users/office/.gemini/antigravity/scratch/youtube-agent-skill/shared/fixtures/synthetic_demo/bg_music.wav",
+      "license_class": "MIT Procedural Test",
+      "ducking_level_db": -24.0
+    }
+  },
+  "graphics_and_subtitles": {
+    "subtitles_file": "/Users/office/.gemini/antigravity/scratch/youtube-agent-skill/shared/fixtures/synthetic_demo/subtitles.srt",
+    "rtl_layout": true
+  },
+  "render_target": {
+    "output_path": "/Users/office/.gemini/antigravity/scratch/youtube-agent-skill/shared/fixtures/synthetic_demo/synthetic_rendered_demo.mp4",
+    "resolution": "1920x1080",
+    "fps": 30,
+    "video_codec": "libx264",
+    "audio_codec": "aac"
+  }
+}

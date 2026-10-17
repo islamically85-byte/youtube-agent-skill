@@ -1,8 +1,9 @@
 {
   "name": "youtube-agent",
-  "description": "Seventeen professional skills for a complete YouTube production studio: scripting, packaging linter, EDL cuts, retention diagnostics, chapters, shorts extraction, competitor outlier ranking, channel audits, storyboards, multi-scene production coordination, localization (with native Pakistani Urdu support), claim fact-checking, publication prep, and controlled A/B experiments.",
+  "description": "Twenty-four professional skills for a complete YouTube production studio: scripting, packaging linter, EDL cuts, retention diagnostics, chapters, shorts extraction, competitor outlier ranking, channel audits, storyboards, multi-scene production coordination, localization (with native Pakistani Urdu support), claim fact-checking, publication prep, controlled A/B experiments, free stock footage curation, multi-track FFmpeg rendering, and automated media QA.",
   "version": "2.0.0",
   "author": { "name": "Jake Schincariol", "url": "https://opusjake.ai" },
+  "maintainer": { "name": "ABDUL MUEED LASHARY" },
   "homepage": "https://github.com/islamically85-byte/youtube-agent-skill",
   "repository": "https://github.com/islamically85-byte/youtube-agent-skill",
   "license": "MIT",

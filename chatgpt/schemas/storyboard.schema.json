@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "StoryboardSpecification",
+  "description": "Schema for production storyboards and scene-by-scene prompts.",
+  "type": "object",
+  "properties": {
+    "project_title": { "type": "string" },
+    "aspect_ratio": { "type": "string", "enum": ["16:9", "9:16", "1:1"] },
+    "total_estimated_duration_sec": { "type": "number" },
+    "character_and_setting_bible": {
+      "type": "object",
+      "properties": {
+        "characters": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": { "type": "string" },
+              "appearance": { "type": "string" },
+              "wardrobe": { "type": "string" },
+              "consistency_tokens": { "type": "string" }
+            },
+            "required": ["name", "appearance"]
+          }
+        },
+        "environment": { "type": "string" },
+        "lighting_and_palette": { "type": "string" }
+      }
+    },
+    "scenes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "scene_number": { "type": "integer" },
+          "duration_sec": { "type": "number" },
+          "camera_angle": { "type": "string" },
+          "camera_movement": { "type": "string" },
+          "visual_action": { "type": "string" },
+          "spoken_dialogue": { "type": "string" },
+          "audio_sfx_music": { "type": "string" },
+          "on_screen_text": { "type": "string" },
+          "generation_prompt": { "type": "string" },
+          "negative_prompt": { "type": "string" }
+        },
+        "required": ["scene_number", "duration_sec", "visual_action"]
+      }
+    }
+  },
+  "required": ["project_title", "aspect_ratio", "scenes"]
+}
